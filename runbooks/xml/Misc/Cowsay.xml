@@ -1,0 +1,28 @@
+<joblist>
+  <job>
+    <context>
+      <options preserveOrder='true'>
+        <option name='opt1' value='Hello Rundeck!'>
+          <label>Cowsay says</label>
+        </option>
+      </options>
+    </context>
+    <defaultTab>nodes</defaultTab>
+    <description>Just a cowsay print using options :-)</description>
+    <executionEnabled>true</executionEnabled>
+    <group>Use Cases/Misc</group>
+    <id>12061c9e-9e51-410e-a4c2-39d91b7da3e2</id>
+    <loglevel>INFO</loglevel>
+    <name>Cowsay</name>
+    <nodeFilterEditable>false</nodeFilterEditable>
+    <plugins />
+    <scheduleEnabled>true</scheduleEnabled>
+    <sequence keepgoing='false' strategy='node-first'>
+      <command>
+        <description>Print text from an option</description>
+        <exec>cowsay "${option.opt1}"</exec>
+      </command>
+    </sequence>
+    <uuid>12061c9e-9e51-410e-a4c2-39d91b7da3e2</uuid>
+  </job>
+</joblist>

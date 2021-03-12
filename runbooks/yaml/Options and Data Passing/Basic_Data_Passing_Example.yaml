@@ -1,0 +1,34 @@
+- defaultTab: nodes
+  description: |-
+    Basic data-passing feature example.
+
+    More info here: https://docs.rundeck.com/docs/manual/log-filters/key-value-data.html#key-value-data
+  executionEnabled: true
+  group: Basic Examples/Options and Data Passing
+  id: a0daf1e3-e918-43dc-b232-bc46a7a287b6
+  loglevel: INFO
+  name: Basic Data Passing Example
+  nodeFilterEditable: false
+  plugins:
+    ExecutionLifecycle: null
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - description: Print all env vars key/values
+      exec: env
+      plugins:
+        LogFilter:
+        - config:
+            invalidKeyPattern: \s|\$|\{|\}|\\
+            logData: 'true'
+            regex: ^(SHELL|USER|PWD)\s*=\s*(.+)$
+          type: key-value-data
+    - description: Get only the SHELL key/value
+      exec: 'echo "Shell is: ${data.SHELL}"'
+    - description: Get only the USER key/value
+      exec: 'echo "Username is: ${data.USER}"'
+    - description: Get only the PWD key/value
+      exec: 'echo "Default user workspace is: ${data.PWD}"'
+    keepgoing: false
+    strategy: node-first
+  uuid: a0daf1e3-e918-43dc-b232-bc46a7a287b6

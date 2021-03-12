@@ -1,0 +1,25 @@
+- defaultTab: nodes
+  description: "Global Log Filter basic example. \n\nMore information: https://docs.rundeck.com/docs/manual/log-filters/#log-filters"
+  executionEnabled: true
+  group: Basic Examples/Basic Workflows
+  id: a0296d93-4b10-48d7-8b7d-86ad3f603b85
+  loglevel: INFO
+  name: Global Log Filter Usage
+  nodeFilterEditable: false
+  plugins:
+    ExecutionLifecycle: null
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - description: Using env command we can extract a lot of keys/values :-)
+      exec: env
+    keepgoing: false
+    pluginConfig:
+      LogFilter:
+      - config:
+          invalidKeyPattern: \s|\$|\{|\}|\\
+          logData: 'true'
+          regex: ^(SHELL|USER|PWD)\s*=\s*(.+)$
+        type: key-value-data
+    strategy: node-first
+  uuid: a0296d93-4b10-48d7-8b7d-86ad3f603b85

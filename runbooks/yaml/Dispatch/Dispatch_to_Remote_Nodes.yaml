@@ -1,0 +1,32 @@
+- defaultTab: nodes
+  description: "Dispatch a job to a nodes using a filter. \n\nMore information here:\
+    \ https://docs.rundeck.com/docs/manual/creating-jobs.html#node-dispatching-and-filtering"
+  executionEnabled: true
+  group: Basic Examples/Dispatch
+  id: 3ebd683d-4f0a-42ae-8d32-2be22fbb9ae5
+  loglevel: INFO
+  name: Dispatch to Remote Nodes
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: ${option.mynodes}
+  nodesSelectedByDefault: true
+  options:
+  - label: Node filter
+    name: mynodes
+    value: node.*
+  plugins:
+    ExecutionLifecycle: null
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - description: Get kernel info from all remote nodes
+      exec: uname -a
+    keepgoing: false
+    strategy: node-first
+  uuid: 3ebd683d-4f0a-42ae-8d32-2be22fbb9ae5

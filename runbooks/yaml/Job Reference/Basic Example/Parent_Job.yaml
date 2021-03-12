@@ -1,0 +1,23 @@
+- defaultTab: nodes
+  description: "Parent job example of a basic Job Reference Step. \n\nMore information\
+    \ here: https://docs.rundeck.com/docs/manual/node-steps/builtin.html#job-reference-step"
+  executionEnabled: true
+  group: Basic Examples/Job Referece/Basic Job Reference Example
+  id: 5abc6eca-6986-47bf-be07-91dc117c8155
+  loglevel: INFO
+  name: Parent Job
+  nodeFilterEditable: false
+  plugins:
+    ExecutionLifecycle: null
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - description: Call the child job using Job Reference Step
+      jobref:
+        group: Basic Examples/Job Referece/Basic Job Reference Example
+        name: Child Job
+        nodeStep: 'true'
+        uuid: 25403be6-c103-472d-aafa-6da70530aaa7
+    keepgoing: false
+    strategy: node-first
+  uuid: 5abc6eca-6986-47bf-be07-91dc117c8155

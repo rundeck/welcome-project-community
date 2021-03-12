@@ -1,0 +1,31 @@
+<joblist>
+  <job>
+    <defaultTab>nodes</defaultTab>
+    <description><![CDATA[Cron scheduled job example.
+
+More info here: https://docs.rundeck.com/docs/manual/creating-jobs.html#scheduled-jobs
+
+Excellent tool to create crontab: https://www.freeformatter.com/cron-expression-generator-quartz.html]]></description>
+    <executionEnabled>true</executionEnabled>
+    <group>Basic Examples/Schedule</group>
+    <id>f0a175e6-75ef-41e3-a11c-18e8dca833a9</id>
+    <loglevel>INFO</loglevel>
+    <name>Cron Scheduled Job</name>
+    <nodeFilterEditable>false</nodeFilterEditable>
+    <plugins />
+    <schedule>
+      <month month='*' />
+      <time hour='*' minute='*' seconds='0/30' />
+      <weekday day='*' />
+      <year year='*' />
+    </schedule>
+    <scheduleEnabled>false</scheduleEnabled>
+    <sequence keepgoing='false' strategy='node-first'>
+      <command>
+        <description>Just a echo command</description>
+        <exec>echo "hello world!"</exec>
+      </command>
+    </sequence>
+    <uuid>f0a175e6-75ef-41e3-a11c-18e8dca833a9</uuid>
+  </job>
+</joblist>

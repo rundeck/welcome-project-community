@@ -1,0 +1,34 @@
+- defaultTab: nodes
+  description: |-
+    Basic bash inline-script usage.
+
+    More info here: https://docs.rundeck.com/docs/manual/node-steps/builtin.html#script-step
+  executionEnabled: true
+  group: Basic Examples/Interpreters
+  id: cc910bb3-9672-4038-b1e1-db4ec6d32e59
+  loglevel: INFO
+  name: Bash Inline-Script
+  nodeFilterEditable: false
+  options:
+  - label: Title name
+    name: name
+    value: a devops specialist
+  - label: Years
+    name: years
+    value: '12'
+  plugins:
+    ExecutionLifecycle: null
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - description: Get the values from options to print it on bash inline-script
+      fileExtension: .sh
+      interpreterArgsQuoted: false
+      script: |-
+        title="@option.name@"
+        years=@option.years@
+        echo "I have been $title for $years years"
+      scriptInterpreter: /bin/bash
+    keepgoing: false
+    strategy: node-first
+  uuid: cc910bb3-9672-4038-b1e1-db4ec6d32e59

@@ -1,0 +1,32 @@
+- defaultTab: nodes
+  description: |-
+    Cron scheduled job example.
+
+    More info here: https://docs.rundeck.com/docs/manual/creating-jobs.html#scheduled-jobs
+
+    Excellent tool to create crontab: https://www.freeformatter.com/cron-expression-generator-quartz.html
+  executionEnabled: true
+  group: Basic Examples/Schedule
+  id: f0a175e6-75ef-41e3-a11c-18e8dca833a9
+  loglevel: INFO
+  name: Cron Scheduled Job
+  nodeFilterEditable: false
+  plugins:
+    ExecutionLifecycle: null
+  schedule:
+    month: '*'
+    time:
+      hour: '*'
+      minute: '*'
+      seconds: 0/30
+    weekday:
+      day: '*'
+    year: '*'
+  scheduleEnabled: false
+  sequence:
+    commands:
+    - description: Just a echo command
+      exec: echo "hello world!"
+    keepgoing: false
+    strategy: node-first
+  uuid: f0a175e6-75ef-41e3-a11c-18e8dca833a9

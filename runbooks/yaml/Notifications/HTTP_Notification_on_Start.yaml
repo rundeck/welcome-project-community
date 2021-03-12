@@ -1,0 +1,34 @@
+- defaultTab: nodes
+  description: Please open https://webhook.site and use the webhook url on the webhook_url
+    option.
+  executionEnabled: true
+  group: Basic Examples/Notifications
+  id: 1424d726-6067-4fc3-b414-93631988698a
+  loglevel: INFO
+  name: HTTP Notification on Start
+  nodeFilterEditable: false
+  notification:
+    onstart:
+      plugin:
+        configuration:
+          authentication: None
+          contentType: application/json
+          method: POST
+          remoteUrl: ${option.webhook_url}
+          timeout: '30000'
+        type: HttpNotification
+  notifyAvgDurationThreshold: null
+  options:
+  - label: webhook.site webhook URL
+    name: webhook_url
+  plugins:
+    ExecutionLifecycle: null
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - description: Just an echo command
+      exec: echo "hello world!"
+    keepgoing: false
+    strategy: node-first
+  timeout: '5'
+  uuid: 1424d726-6067-4fc3-b414-93631988698a

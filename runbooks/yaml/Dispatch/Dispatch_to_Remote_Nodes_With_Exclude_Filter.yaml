@@ -1,0 +1,36 @@
+- defaultTab: nodes
+  description: "Dispatch a job to a nodes using a filter and exclude filter. \n\n\
+    More information here: https://docs.rundeck.com/docs/manual/05-nodes.html#filter-expression-syntax"
+  executionEnabled: true
+  group: Basic Examples/Dispatch
+  id: d7394225-beb0-495a-bc76-47a2066f0a7c
+  loglevel: INFO
+  name: Dispatch to Remote Nodes With Exclude Filter
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: ${option.mynodes}
+    filterExclude: ${option.excluded_nodes}
+  nodesSelectedByDefault: true
+  options:
+  - label: Node filter
+    name: mynodes
+    value: node.*
+  - label: Exclude node filter
+    name: excluded_nodes
+    value: node00
+  plugins:
+    ExecutionLifecycle: null
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - description: Get kernel information
+      exec: uname -a
+    keepgoing: false
+    strategy: node-first
+  uuid: d7394225-beb0-495a-bc76-47a2066f0a7c

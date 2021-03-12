@@ -1,0 +1,30 @@
+- defaultTab: nodes
+  description: |-
+    Simple scheduled job example.
+
+    More info here: https://docs.rundeck.com/docs/manual/creating-jobs.html#scheduled-jobs
+  executionEnabled: true
+  group: Basic Examples/Schedule
+  id: 6dd625a7-80ce-4e87-a2f5-f8c96689c35d
+  loglevel: INFO
+  name: Simple Scheduled Job
+  nodeFilterEditable: false
+  plugins:
+    ExecutionLifecycle: null
+  schedule:
+    month: '*'
+    time:
+      hour: '00'
+      minute: '00'
+      seconds: '0'
+    weekday:
+      day: '*'
+    year: '*'
+  scheduleEnabled: false
+  sequence:
+    commands:
+    - description: Just a echo command
+      exec: echo "hello world!"
+    keepgoing: false
+    strategy: node-first
+  uuid: 6dd625a7-80ce-4e87-a2f5-f8c96689c35d

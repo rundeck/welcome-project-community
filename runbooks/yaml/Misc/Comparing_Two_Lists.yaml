@@ -1,0 +1,71 @@
+- defaultTab: nodes
+  description: Comparing two list option and get the difference.
+  executionEnabled: true
+  group: Use Cases/Misc
+  id: 5a067bd8-3aa4-47eb-a522-19a5d9cdd797
+  loglevel: INFO
+  name: Comparing Two Lists
+  nodeFilterEditable: false
+  options:
+  - label: List One
+    name: list_one
+    value: '494,192,111,214'
+  - label: List Two
+    name: list_two
+    required: true
+    value: '494,192,111,214,999'
+  plugins:
+    ExecutionLifecycle: null
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - description: Bash inline-script that compares two list.
+      fileExtension: .sh
+      interpreterArgsQuoted: false
+      script: |-
+        # list one
+        VAR1=@option.list_one@
+
+        # list two
+        VAR2=@option.list_two@
+
+        # for debug
+        echo "******************"
+        echo "Your list: $VAR1"
+        echo "Your expected values: $VAR2"
+        echo "******************"
+
+        Field_Separator=$IFS
+
+        # set comma as internal field separator for the string list
+        IFS=,
+
+        # store the missing values
+        a=()
+
+        # check two lists
+        for i in $VAR2; do
+            found=
+            for j in $VAR1; do
+                if [ $i == $j ]; then
+                    found=1
+                    break
+                fi
+            done
+            if [ ! $found ]; then
+                a+=($i)
+            fi
+        done
+
+        # now verify the possible missing values
+        if [[ -z "${a[*]}" ]]; then
+           echo "All ok!"
+        else
+          echo "missing values: ${a[*]}"
+        fi
+
+        IFS=$Field_Separator
+      scriptInterpreter: /bin/bash
+    keepgoing: false
+    strategy: node-first
+  uuid: 5a067bd8-3aa4-47eb-a522-19a5d9cdd797

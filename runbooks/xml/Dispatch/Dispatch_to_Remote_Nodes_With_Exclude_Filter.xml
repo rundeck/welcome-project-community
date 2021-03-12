@@ -1,0 +1,45 @@
+<joblist>
+  <job>
+    <context>
+      <options preserveOrder='true'>
+        <option name='mynodes' value='node.*'>
+          <label>Node filter</label>
+        </option>
+        <option name='excluded_nodes' value='node00'>
+          <label>Exclude node filter</label>
+        </option>
+      </options>
+    </context>
+    <defaultTab>nodes</defaultTab>
+    <description><![CDATA[Dispatch a job to a nodes using a filter and exclude filter. 
+
+More information here: https://docs.rundeck.com/docs/manual/05-nodes.html#filter-expression-syntax]]></description>
+    <dispatch>
+      <excludePrecedence>true</excludePrecedence>
+      <keepgoing>false</keepgoing>
+      <rankOrder>ascending</rankOrder>
+      <successOnEmptyNodeFilter>false</successOnEmptyNodeFilter>
+      <threadcount>1</threadcount>
+    </dispatch>
+    <executionEnabled>true</executionEnabled>
+    <group>Basic Examples/Dispatch</group>
+    <id>d7394225-beb0-495a-bc76-47a2066f0a7c</id>
+    <loglevel>INFO</loglevel>
+    <name>Dispatch to Remote Nodes With Exclude Filter</name>
+    <nodeFilterEditable>false</nodeFilterEditable>
+    <nodefilters>
+      <filter>${option.mynodes}</filter>
+      <filterExclude>${option.excluded_nodes}</filterExclude>
+    </nodefilters>
+    <nodesSelectedByDefault>true</nodesSelectedByDefault>
+    <plugins />
+    <scheduleEnabled>true</scheduleEnabled>
+    <sequence keepgoing='false' strategy='node-first'>
+      <command>
+        <description>Get kernel information</description>
+        <exec>uname -a</exec>
+      </command>
+    </sequence>
+    <uuid>d7394225-beb0-495a-bc76-47a2066f0a7c</uuid>
+  </job>
+</joblist>

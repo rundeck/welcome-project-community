@@ -1,0 +1,25 @@
+<joblist>
+  <job>
+    <defaultTab>nodes</defaultTab>
+    <description><![CDATA[Parent job example of a basic Job Reference Step. 
+
+More information here: https://docs.rundeck.com/docs/manual/node-steps/builtin.html#job-reference-step]]></description>
+    <executionEnabled>true</executionEnabled>
+    <group>Basic Examples/Job Referece/Basic Job Reference Example</group>
+    <id>5abc6eca-6986-47bf-be07-91dc117c8155</id>
+    <loglevel>INFO</loglevel>
+    <name>Parent Job</name>
+    <nodeFilterEditable>false</nodeFilterEditable>
+    <plugins />
+    <scheduleEnabled>true</scheduleEnabled>
+    <sequence keepgoing='false' strategy='node-first'>
+      <command>
+        <description>Call the child job using Job Reference Step</description>
+        <jobref group='Basic Examples/Job Referece/Basic Job Reference Example' name='Child Job' nodeStep='true'>
+          <uuid>25403be6-c103-472d-aafa-6da70530aaa7</uuid>
+        </jobref>
+      </command>
+    </sequence>
+    <uuid>5abc6eca-6986-47bf-be07-91dc117c8155</uuid>
+  </job>
+</joblist>

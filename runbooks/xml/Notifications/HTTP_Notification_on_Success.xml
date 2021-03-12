@@ -1,0 +1,44 @@
+<joblist>
+  <job>
+    <context>
+      <options preserveOrder='true'>
+        <option name='webhook_url'>
+          <label>webhook.site webhook URL</label>
+        </option>
+      </options>
+    </context>
+    <defaultTab>nodes</defaultTab>
+    <description>Please open https://webhook.site and use the webhook url on the webhook_url option.</description>
+    <executionEnabled>true</executionEnabled>
+    <group>Basic Examples/Notifications</group>
+    <id>37c2aec9-6317-462f-8dc9-e71b448014a4</id>
+    <loglevel>INFO</loglevel>
+    <name>HTTP Notification on Success</name>
+    <nodeFilterEditable>false</nodeFilterEditable>
+    <notification>
+      <onsuccess>
+        <plugin type='HttpNotification'>
+          <configuration>
+            <entry key='authentication' value='None' />
+            <entry key='contentType' value='application/json' />
+            <entry key='method' value='POST' />
+            <entry key='noSSLVerification' value='true' />
+            <entry key='printResponseToFile' value='true' />
+            <entry key='remoteUrl' value='${option.webhook_url}' />
+            <entry key='timeout' value='30000' />
+          </configuration>
+        </plugin>
+      </onsuccess>
+    </notification>
+    <notifyAvgDurationThreshold />
+    <plugins />
+    <scheduleEnabled>true</scheduleEnabled>
+    <sequence keepgoing='false' strategy='node-first'>
+      <command>
+        <description>Just a echo command</description>
+        <exec>echo "hello world!"</exec>
+      </command>
+    </sequence>
+    <uuid>37c2aec9-6317-462f-8dc9-e71b448014a4</uuid>
+  </job>
+</joblist>

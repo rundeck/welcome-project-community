@@ -1,0 +1,46 @@
+<joblist>
+  <job>
+    <defaultTab>nodes</defaultTab>
+    <description>Gathers Linux Version Information</description>
+    <dispatch>
+      <excludePrecedence>true</excludePrecedence>
+      <keepgoing>false</keepgoing>
+      <rankOrder>ascending</rankOrder>
+      <successOnEmptyNodeFilter>false</successOnEmptyNodeFilter>
+      <threadcount>1</threadcount>
+    </dispatch>
+    <executionEnabled>true</executionEnabled>
+    <group>Administration/Linux</group>
+    <id>3a13fca8-4d42-417e-812b-5f2f700dccb3</id>
+    <loglevel>INFO</loglevel>
+    <name>Gather Linux Version</name>
+    <nodeFilterEditable>true</nodeFilterEditable>
+    <nodefilters>
+      <filter>.*</filter>
+    </nodefilters>
+    <nodesSelectedByDefault>true</nodesSelectedByDefault>
+    <plugins />
+    <scheduleEnabled>true</scheduleEnabled>
+    <sequence keepgoing='false' strategy='node-first'>
+      <command>
+        <description>Print the node name</description>
+        <exec>echo "Linux version of ${node.name}"</exec>
+        <plugins>
+          <LogFilter type='highlight-output'>
+            <config>
+              <bgcolor>black</bgcolor>
+              <fgcolor>white</fgcolor>
+              <mode>bold</mode>
+              <regex>(.*)</regex>
+            </config>
+          </LogFilter>
+        </plugins>
+      </command>
+      <command>
+        <description>Get Linux Version Info</description>
+        <exec>uname -a</exec>
+      </command>
+    </sequence>
+    <uuid>3a13fca8-4d42-417e-812b-5f2f700dccb3</uuid>
+  </job>
+</joblist>

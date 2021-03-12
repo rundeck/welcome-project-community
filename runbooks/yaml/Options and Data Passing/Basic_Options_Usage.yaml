@@ -1,0 +1,33 @@
+- defaultTab: nodes
+  description: |-
+    Very basic options usage example.
+
+    More info here: https://docs.rundeck.com/docs/manual/job-options.html#job-options
+  executionEnabled: true
+  group: Basic Examples/Options and Data Passing
+  id: d8323d5b-4344-411c-822d-57688e207648
+  loglevel: INFO
+  name: Basic Options Usage
+  nodeFilterEditable: false
+  options:
+  - label: Type any string
+    name: opt1
+    value: world!
+  plugins:
+    ExecutionLifecycle: null
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - description: This is the way of use options on command steps
+      exec: echo "hello ${option.opt1}"
+    - description: This is the way of use options on inline-script steps
+      fileExtension: .sh
+      interpreterArgsQuoted: false
+      script: |-
+        #!/bin/bash
+
+        echo "hello @option.opt1@"
+      scriptInterpreter: /bin/bash
+    keepgoing: false
+    strategy: node-first
+  uuid: d8323d5b-4344-411c-822d-57688e207648
