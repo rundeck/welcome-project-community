@@ -1,0 +1,22 @@
+- defaultTab: nodes
+  description: Just a cowsay print using options :-)
+  executionEnabled: true
+  group: Use Cases/Misc
+  id: 12061c9e-9e51-410e-a4c2-39d91b7da3e2
+  loglevel: INFO
+  name: Cowsay
+  nodeFilterEditable: false
+  options:
+  - label: Cowsay says
+    name: opt1
+    value: Hello Rundeck!
+  plugins:
+    ExecutionLifecycle: null
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - description: Print text from an option
+      exec: cowsay "${option.opt1}"
+    keepgoing: false
+    strategy: node-first
+  uuid: 12061c9e-9e51-410e-a4c2-39d91b7da3e2

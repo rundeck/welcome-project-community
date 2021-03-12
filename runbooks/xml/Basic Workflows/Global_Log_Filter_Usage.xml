@@ -1,0 +1,32 @@
+<joblist>
+  <job>
+    <defaultTab>nodes</defaultTab>
+    <description><![CDATA[Global Log Filter basic example. 
+
+More information: https://docs.rundeck.com/docs/manual/log-filters/#log-filters]]></description>
+    <executionEnabled>true</executionEnabled>
+    <group>Basic Examples/Basic Workflows</group>
+    <id>a0296d93-4b10-48d7-8b7d-86ad3f603b85</id>
+    <loglevel>INFO</loglevel>
+    <name>Global Log Filter Usage</name>
+    <nodeFilterEditable>false</nodeFilterEditable>
+    <plugins />
+    <scheduleEnabled>true</scheduleEnabled>
+    <sequence keepgoing='false' strategy='node-first'>
+      <command>
+        <description>Using env command we can extract a lot of keys/values :-)</description>
+        <exec>env</exec>
+      </command>
+      <pluginConfig>
+        <LogFilter type='key-value-data'>
+          <config>
+            <invalidKeyPattern>\s|\$|\{|\}|\\</invalidKeyPattern>
+            <logData>true</logData>
+            <regex>^(SHELL|USER|PWD)\s*=\s*(.+)$</regex>
+          </config>
+        </LogFilter>
+      </pluginConfig>
+    </sequence>
+    <uuid>a0296d93-4b10-48d7-8b7d-86ad3f603b85</uuid>
+  </job>
+</joblist>

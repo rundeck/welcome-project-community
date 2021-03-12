@@ -1,0 +1,32 @@
+- defaultTab: nodes
+  description: "Example of Random Subset Orchestrator over three nodes. \n\nMore information\
+    \ here: https://docs.rundeck.com/docs/manual/orchestrator-plugins/bundled.html#random-subset"
+  executionEnabled: true
+  group: Basic Examples/Dispatch
+  id: 055d9a14-4adf-4855-bba5-a623492a6611
+  loglevel: INFO
+  name: Ramdom Subset Orchestrator
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: node.*
+  nodesSelectedByDefault: true
+  orchestrator:
+    configuration:
+      count: '1'
+    type: subset
+  plugins:
+    ExecutionLifecycle: null
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - description: A single echo command
+      exec: sleep 3; echo "done!"
+    keepgoing: false
+    strategy: node-first
+  uuid: 055d9a14-4adf-4855-bba5-a623492a6611

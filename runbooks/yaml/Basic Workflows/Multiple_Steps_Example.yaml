@@ -1,0 +1,28 @@
+- defaultTab: nodes
+  description: "Just a job with multiple steps. \n\nMore information here: https://docs.rundeck.com/docs/manual/node-steps/builtin.html#builtin-node-steps"
+  executionEnabled: true
+  group: Basic Examples/Basic Workflows
+  id: d5290f49-e64b-48f5-8d83-e76c0ec9851a
+  loglevel: INFO
+  name: Multiple Steps Example
+  nodeFilterEditable: false
+  plugins:
+    ExecutionLifecycle: null
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - description: First step (command step)
+      exec: echo "step one"
+    - description: Second step (inline-script)
+      fileExtension: .sh
+      interpreterArgsQuoted: false
+      script: |
+        #!/bin/bash
+
+        echo "step two"
+      scriptInterpreter: /bin/bash
+    - description: Third step (command step)
+      exec: echo "step three"
+    keepgoing: false
+    strategy: node-first
+  uuid: d5290f49-e64b-48f5-8d83-e76c0ec9851a

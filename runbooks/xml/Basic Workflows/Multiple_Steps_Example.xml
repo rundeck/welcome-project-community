@@ -1,0 +1,37 @@
+<joblist>
+  <job>
+    <defaultTab>nodes</defaultTab>
+    <description><![CDATA[Just a job with multiple steps. 
+
+More information here: https://docs.rundeck.com/docs/manual/node-steps/builtin.html#builtin-node-steps]]></description>
+    <executionEnabled>true</executionEnabled>
+    <group>Basic Examples/Basic Workflows</group>
+    <id>d5290f49-e64b-48f5-8d83-e76c0ec9851a</id>
+    <loglevel>INFO</loglevel>
+    <name>Multiple Steps Example</name>
+    <nodeFilterEditable>false</nodeFilterEditable>
+    <plugins />
+    <scheduleEnabled>true</scheduleEnabled>
+    <sequence keepgoing='false' strategy='node-first'>
+      <command>
+        <description>First step (command step)</description>
+        <exec>echo "step one"</exec>
+      </command>
+      <command>
+        <description>Second step (inline-script)</description>
+        <fileExtension>.sh</fileExtension>
+        <script><![CDATA[#!/bin/bash
+
+echo "step two"
+]]></script>
+        <scriptargs />
+        <scriptinterpreter>/bin/bash</scriptinterpreter>
+      </command>
+      <command>
+        <description>Third step (command step)</description>
+        <exec>echo "step three"</exec>
+      </command>
+    </sequence>
+    <uuid>d5290f49-e64b-48f5-8d83-e76c0ec9851a</uuid>
+  </job>
+</joblist>

@@ -1,0 +1,40 @@
+<joblist>
+  <job>
+    <defaultTab>nodes</defaultTab>
+    <description><![CDATA[Example of Random Subset Orchestrator over three nodes. 
+
+More information here: https://docs.rundeck.com/docs/manual/orchestrator-plugins/bundled.html#random-subset]]></description>
+    <dispatch>
+      <excludePrecedence>true</excludePrecedence>
+      <keepgoing>false</keepgoing>
+      <rankOrder>ascending</rankOrder>
+      <successOnEmptyNodeFilter>false</successOnEmptyNodeFilter>
+      <threadcount>1</threadcount>
+    </dispatch>
+    <executionEnabled>true</executionEnabled>
+    <group>Basic Examples/Dispatch</group>
+    <id>055d9a14-4adf-4855-bba5-a623492a6611</id>
+    <loglevel>INFO</loglevel>
+    <name>Ramdom Subset Orchestrator</name>
+    <nodeFilterEditable>false</nodeFilterEditable>
+    <nodefilters>
+      <filter>node.*</filter>
+    </nodefilters>
+    <nodesSelectedByDefault>true</nodesSelectedByDefault>
+    <orchestrator>
+      <configuration>
+        <count>1</count>
+      </configuration>
+      <type>subset</type>
+    </orchestrator>
+    <plugins />
+    <scheduleEnabled>true</scheduleEnabled>
+    <sequence keepgoing='false' strategy='node-first'>
+      <command>
+        <description>A single echo command</description>
+        <exec>sleep 3; echo "done!"</exec>
+      </command>
+    </sequence>
+    <uuid>055d9a14-4adf-4855-bba5-a623492a6611</uuid>
+  </job>
+</joblist>

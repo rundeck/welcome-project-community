@@ -1,0 +1,19 @@
+- defaultTab: nodes
+  description: "Child job example of a basic Job Reference Step. \n\nMore information\
+    \ here: https://docs.rundeck.com/docs/manual/node-steps/builtin.html#job-reference-step"
+  executionEnabled: true
+  group: Basic Examples/Job Referece/Basic Job Reference Example
+  id: 25403be6-c103-472d-aafa-6da70530aaa7
+  loglevel: INFO
+  name: Child Job
+  nodeFilterEditable: false
+  plugins:
+    ExecutionLifecycle: null
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - description: Just an echo
+      exec: echo "hello world!"
+    keepgoing: false
+    strategy: node-first
+  uuid: 25403be6-c103-472d-aafa-6da70530aaa7
