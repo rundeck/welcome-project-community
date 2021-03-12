@@ -1,0 +1,71 @@
+version: '3'
+services:
+    rundeck:
+        container_name: rundeck
+        build:
+          context: rundeck
+          args:
+            RUNDECK_IMAGE: ${RUNDECK_IMAGE:-rundeck/rundeck:3.3.10}
+        links:
+          - mysql
+        environment:
+            RUNDECK_GRAILS_URL: http://localhost:4440
+            RUNDECK_DATABASE_DRIVER: org.mariadb.jdbc.Driver
+            RUNDECK_DATABASE_USERNAME: rundeck
+            RUNDECK_DATABASE_PASSWORD: rundeck
+            RUNDECK_DATABASE_URL: jdbc:mariadb://mysql/rundeck?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
+            RUNDECK_SERVER_ADDRESS: 0.0.0.0
+        ports:
+          - 4440:4440
+    mysql:
+        container_name: mysql
+        image: mysql:8
+        expose:
+          - 3306
+        environment:
+          - MYSQL_ROOT_PASSWORD=root
+          - MYSQL_DATABASE=rundeck
+          - MYSQL_USER=rundeck
+          - MYSQL_PASSWORD=rundeck
+    client:
+      container_name: client
+      build:
+        context: client
+      environment:
+        CONFIG_FILE: import.yml
+        RUNDECK_URL: http://rundeck:4440
+        RUNDECK_API_URL: http://localhost:4440
+        RUNDECK_TOKEN: u5gJoKU3NpS6IC4lFmPQFfDkUlZnQOXp
+      volumes:
+        - ./data/linux_id_rsa:/rundeck-cli/data/linux_id_rsa
+        - ./data/user.aclpolicy:/rundeck-cli/data/user.aclpolicy
+    node:
+      container_name: node00
+      image: rundeck/node-demo
+      ports:
+         - "22"
+      environment:
+        - SSHD_PORT=22
+      volumes:
+        - ./data/linux_id_rsa:/configuration/id_rsa
+        - ./data/linux_id_rsa.pub:/configuration/id_rsa.pub
+    node2:
+      container_name: node01
+      image: rundeck/node-demo
+      ports:
+         - "22"
+      environment:
+        - SSHD_PORT=22
+      volumes:
+        - ./data/linux_id_rsa:/configuration/id_rsa
+        - ./data/linux_id_rsa.pub:/configuration/id_rsa.pub
+    node3:
+      container_name: node02
+      image: rundeck/node-demo
+      ports:
+         - "22"
+      environment:
+        - SSHD_PORT=22
+      volumes:
+        - ./data/linux_id_rsa:/configuration/id_rsa
+        - ./data/linux_id_rsa.pub:/configuration/id_rsa.pub

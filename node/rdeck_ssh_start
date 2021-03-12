@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+set -e
+
+USERNAME=agent
+HOME=/home/agent
+
+CONTAINER_CONFIG_DIR=/configuration
+
+if [[ $SSHD_PORT == "" ]]; then
+    SSHD_PORT=22
+fi
+
+if [[ -d $CONTAINER_CONFIG_DIR ]]; then
+    echo "performing container configuration"
+    cp "$CONTAINER_CONFIG_DIR"/id_rsa.pub /home/$USERNAME/.ssh/authorized_keys
+    chown -R "$USERNAME" $HOME/.ssh
+fi
+
+service nginx start
+
+exec /usr/sbin/sshd -oPort="$SSHD_PORT" -e -D

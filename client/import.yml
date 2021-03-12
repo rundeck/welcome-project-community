@@ -1,0 +1,18 @@
+projects:
+  - name: runboks-project
+    archive: projects/runbooks-project.jar
+
+keys:
+  - path: node/node.key
+    type: privateKey
+    file: data/linux_id_rsa
+
+acls:
+  - name: UserAccess.aclpolicy
+    file: data/user.aclpolicy
+
+users:
+  - username: alice
+    email: alice@rundeck.com
+  - username: bonny
+    email: bonny@rundeck.com
