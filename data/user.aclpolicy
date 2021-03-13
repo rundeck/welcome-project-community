@@ -1,0 +1,19 @@
+by:
+  group: user
+description: Allow Storage Access
+for:
+  storage:
+  - allow:
+    - read
+context:
+  application: rundeck
+---
+by:
+  group: user
+description: Allow [read] for project
+for:
+  project:
+  - allow:
+    - read
+context:
+  application: rundeck

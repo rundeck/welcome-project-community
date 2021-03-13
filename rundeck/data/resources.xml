@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+<node name="node00" description="node00" tags="node0" hostname="node00" osArch="amd64" osFamily="unix" osName="Linux" osVersion="5.8.0-7642-generic" username="agent" ssh-keypath="/home/rundeck/linux_id_rsa"/>
+<node name="node01" description="node01" tags="node1" hostname="node01" osArch="amd64" osFamily="unix" osName="Linux" osVersion="5.8.0-7642-generic" username="agent" ssh-keypath="/home/rundeck/linux_id_rsa"/>
+<node name="node02" description="node02" tags="node2" hostname="node02" osArch="amd64" osFamily="unix" osName="Linux" osVersion="5.8.0-7642-generic" username="agent" ssh-keypath="/home/rundeck/linux_id_rsa"/>
+</project>
