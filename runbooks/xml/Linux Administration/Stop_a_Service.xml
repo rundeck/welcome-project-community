@@ -1,0 +1,77 @@
+<joblist>
+  <job>
+    <context>
+      <options preserveOrder='true'>
+        <option enforcedvalues='true' name='service' required='true' value='nginx' values='mysql,nginx' valuesListDelimiter=','>
+          <label>Linux service</label>
+        </option>
+      </options>
+    </context>
+    <defaultTab>output</defaultTab>
+    <description>Check a Linux service status and stop if it's up.</description>
+    <dispatch>
+      <excludePrecedence>true</excludePrecedence>
+      <keepgoing>true</keepgoing>
+      <rankOrder>ascending</rankOrder>
+      <successOnEmptyNodeFilter>false</successOnEmptyNodeFilter>
+      <threadcount>1</threadcount>
+    </dispatch>
+    <executionEnabled>true</executionEnabled>
+    <group>Administration/Linux</group>
+    <id>3448b21a-b287-453d-9b2d-bd1cf7d100e5</id>
+    <loglevel>INFO</loglevel>
+    <name>Stop a Service</name>
+    <nodeFilterEditable>true</nodeFilterEditable>
+    <nodefilters>
+      <filter>name: node00</filter>
+    </nodefilters>
+    <nodesSelectedByDefault>true</nodesSelectedByDefault>
+    <plugins />
+    <scheduleEnabled>false</scheduleEnabled>
+    <sequence keepgoing='true' strategy='node-first'>
+      <command>
+        <description>Get the service status using pgrep</description>
+        <fileExtension>.sh</fileExtension>
+        <plugins>
+          <LogFilter type='key-value-data'>
+            <config>
+              <invalidKeyPattern>\s|\$|\{|\}|\\</invalidKeyPattern>
+              <logData>true</logData>
+              <regex>^(status)\s*=\s*(.+)$</regex>
+            </config>
+          </LogFilter>
+        </plugins>
+        <script><![CDATA[# get the status using pgrep
+if pgrep "@option.service@" >/dev/null; then
+  echo "status=running"
+else
+  echo "status=stopped"
+fi
+]]></script>
+        <scriptargs />
+        <scriptinterpreter>/bin/bash</scriptinterpreter>
+      </command>
+      <command>
+        <description>Print the current service status</description>
+        <exec>echo "the ${option.service} service is ${data.status}"</exec>
+      </command>
+      <command>
+        <description>Stop the service if is stopped</description>
+        <fileExtension>.sh</fileExtension>
+        <script><![CDATA[# stop the service if the stauts is "running"
+if [ @data.status@ = 'running' ]; then
+    echo "starting @option.service@..."
+	sudo /etc/init.d/nginx stop
+else
+    echo "System is active, nothing to do."
+fi
+
+# all done.
+echo "Done."]]></script>
+        <scriptargs />
+        <scriptinterpreter>/bin/bash</scriptinterpreter>
+      </command>
+    </sequence>
+    <uuid>3448b21a-b287-453d-9b2d-bd1cf7d100e5</uuid>
+  </job>
+</joblist>
