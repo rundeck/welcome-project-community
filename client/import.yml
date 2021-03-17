@@ -1,5 +1,5 @@
 projects:
-  - name: runboks-project
+  - name: runbooks-project
     archive: projects/runbooks-project.jar
 
 keys:

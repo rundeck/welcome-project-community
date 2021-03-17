@@ -7,4 +7,4 @@ echo "Init Script Starting"
 
 # update a value in a specified project
 # See rundeckpro/sensu-demo repo for detailed example use
-./bin/cli update --rundeck_url $RUNDECK_URL --project_name "welcome-project" --input_value "none"
+./bin/cli update --rundeck_url $RUNDECK_URL --project_name "runbooks-project" --input_value "none"
