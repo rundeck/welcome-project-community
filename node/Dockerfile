@@ -34,10 +34,7 @@ COPY nginx_start /usr/local/sbin
 
 EXPOSE 22
 
-#RUN sudo service nginx start
-#RUN chmod +x /usr/local/sbin/nginx_start
-
-#CMD /usr/local/sbin/nginx_start
+CMD /etc/init.d/nginx start
 
 # CMD /usr/sbin/sshd -e -D
 CMD /usr/local/sbin/rdeck_ssh_start
