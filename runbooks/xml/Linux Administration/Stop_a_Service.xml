@@ -30,32 +30,40 @@
     <scheduleEnabled>false</scheduleEnabled>
     <sequence keepgoing='true' strategy='node-first'>
       <command>
-        <description>Get the service status from systemd</description>
-        <exec>systemctl status ${option.service} | grep "Active" | awk  '''{print $2}''' | cat</exec>
+        <description>Get the service status using pgrep</description>
+        <fileExtension>.sh</fileExtension>
         <plugins>
           <LogFilter type='key-value-data'>
             <config>
               <invalidKeyPattern>\s|\$|\{|\}|\\</invalidKeyPattern>
               <logData>true</logData>
-              <name>status</name>
-              <regex>(.*)</regex>
+              <regex>^(status)\s*=\s*(.+)$</regex>
             </config>
           </LogFilter>
         </plugins>
+        <script><![CDATA[# get the status using pgrep
+if pgrep "@option.service@" >/dev/null; then
+  echo "status=running"
+else
+  echo "status=stopped"
+fi
+]]></script>
+        <scriptargs />
+        <scriptinterpreter>/bin/bash</scriptinterpreter>
       </command>
       <command>
-        <description>Now, if the status is "inactive" then stop the service</description>
+        <description>Print the current service status</description>
+        <exec>echo "the ${option.service} service is ${data.status}"</exec>
+      </command>
+      <command>
+        <description>Stop the service if is stopped</description>
         <fileExtension>.sh</fileExtension>
-        <script><![CDATA[# print the service status
-echo "current status is @data.status@"
-
-# start the service if the stauts is "inactive"
-if [ @data.status@ = 'active' ]; then
-    echo "stopping @option.service@..."
-	sudo systemctl stop @option.service@
+        <script><![CDATA[# stop the service if the stauts is "running"
+if [ @data.status@ = 'running' ]; then
+    echo "starting @option.service@..."
+	sudo /etc/init.d/nginx stop
 else
-    echo "System is inactive, nothing to do."
-    sudo systemctl status @option.service@ | cat
+    echo "System is active, nothing to do."
 fi
 
 # all done.
