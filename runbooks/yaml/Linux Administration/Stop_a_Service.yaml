@@ -1,0 +1,63 @@
+- defaultTab: output
+  description: Check a Linux service status and stop if it's up.
+  executionEnabled: true
+  group: Administration/Linux
+  id: 3448b21a-b287-453d-9b2d-bd1cf7d100e5
+  loglevel: INFO
+  name: Stop a Service
+  nodeFilterEditable: true
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: true
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: 'name: node00'
+  nodesSelectedByDefault: true
+  options:
+  - enforced: true
+    label: Linux service
+    name: service
+    required: true
+    value: nginx
+    values:
+    - mysql
+    - nginx
+    valuesListDelimiter: ','
+  plugins:
+    ExecutionLifecycle: null
+  scheduleEnabled: false
+  sequence:
+    commands:
+    - description: Get the service status using pgrep
+      fileExtension: .sh
+      interpreterArgsQuoted: false
+      plugins:
+        LogFilter:
+        - config:
+            invalidKeyPattern: \s|\$|\{|\}|\\
+            logData: 'true'
+            regex: ^(status)\s*=\s*(.+)$
+          type: key-value-data
+      script: |
+        # get the status using pgrep
+        if pgrep "@option.service@" >/dev/null; then
+          echo "status=running"
+        else
+          echo "status=stopped"
+        fi
+      scriptInterpreter: /bin/bash
+    - description: Print the current service status
+      exec: echo "the ${option.service} service is ${data.status}"
+    - description: Stop the service if is stopped
+      fileExtension: .sh
+      interpreterArgsQuoted: false
+      script: "# stop the service if the stauts is \"running\"\nif [ @data.status@\
+        \ = 'running' ]; then\n    echo \"starting @option.service@...\"\n\tsudo /etc/init.d/nginx\
+        \ stop\nelse\n    echo \"System is active, nothing to do.\"\nfi\n\n# all done.\n\
+        echo \"Done.\""
+      scriptInterpreter: /bin/bash
+    keepgoing: true
+    strategy: node-first
+  uuid: 3448b21a-b287-453d-9b2d-bd1cf7d100e5

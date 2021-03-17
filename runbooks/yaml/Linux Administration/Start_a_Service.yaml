@@ -1,0 +1,63 @@
+- defaultTab: output
+  description: Check a Linux service status and start if it's down.
+  executionEnabled: true
+  group: Administration/Linux
+  id: acc2844d-28be-4cf4-9420-ca9b139ee537
+  loglevel: INFO
+  name: Start a Service
+  nodeFilterEditable: true
+  nodefilters:
+    dispatch:
+      excludePrecedence: false
+      keepgoing: true
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: 'name: node00'
+  nodesSelectedByDefault: true
+  options:
+  - enforced: true
+    label: Linux Service
+    name: service
+    required: true
+    value: nginx
+    values:
+    - mysql
+    - nginx
+    valuesListDelimiter: ','
+  plugins:
+    ExecutionLifecycle: null
+  scheduleEnabled: false
+  sequence:
+    commands:
+    - description: Get the service status using pgrep
+      fileExtension: .sh
+      interpreterArgsQuoted: false
+      plugins:
+        LogFilter:
+        - config:
+            invalidKeyPattern: \s|\$|\{|\}|\\
+            logData: 'true'
+            regex: ^(status)\s*=\s*(.+)$
+          type: key-value-data
+      script: |
+        # get the status using pgrep
+        if pgrep "@option.service@" >/dev/null; then
+          echo "status=running"
+        else
+          echo "status=stopped"
+        fi
+      scriptInterpreter: /bin/bash
+    - description: Print the service current status
+      exec: echo "the ${option.service} service is ${data.status}"
+    - description: Start the service if is stopped
+      fileExtension: .sh
+      interpreterArgsQuoted: false
+      script: "# start the service if the stauts is \"stopped\"\nif [ @data.status@\
+        \ = 'stopped' ]; then\n    echo \"starting @option.service@...\"\n\tsudo /etc/init.d/nginx\
+        \ start\nelse\n    echo \"System is inactive, nothing to do.\"\nfi\n\n# all\
+        \ done.\necho \"Done.\"\n"
+      scriptInterpreter: /bin/bash
+    keepgoing: true
+    strategy: node-first
+  uuid: acc2844d-28be-4cf4-9420-ca9b139ee537
