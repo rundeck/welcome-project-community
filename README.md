@@ -49,4 +49,4 @@ docker-compose down --volume --rmi all
 
 
 ## Assistance
-For help or questions with this image please join [discussions here](#) and we will do our best to help.
+For help or questions with this image please join [discussions here](https://docs.rundeck.com/docs/manual/02-getting-help.html) and we will do our best to help.
