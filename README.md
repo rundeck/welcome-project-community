@@ -2,7 +2,8 @@
 
 # Welcome to the Rundeck Community Runbooks
 
-This repo has a complete Docker environment with a project that includes sample jobs showing how Rundeck can integrate to turn alerts into action.  After opening the project, click the **Tours** button to get a walk through of the various components and see Rundeck in action.
+This repo has a complete Docker environment with a project that includes sample jobs showing how Rundeck can integrate to turn alerts into action.  
+
 
 ## Setup / Starting the environment
 Running this requires [Docker](https://www.docker.com/) installed on your machine.  We recommend the latest version.
