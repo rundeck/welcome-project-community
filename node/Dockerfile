@@ -18,12 +18,6 @@ RUN apt-get -y update && \
         sysstat \
         nginx
 
-
-RUN mkdir /var/run/sshd
-RUN mkdir /dod-configuration
-
-RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
-
 COPY setup /tmp/setup
 
 RUN /tmp/setup/mk_rundeck_user
@@ -34,7 +28,10 @@ COPY nginx_start /usr/local/sbin
 
 EXPOSE 22
 
-CMD /etc/init.d/nginx start
+#RUN sudo service nginx start
+#RUN chmod +x /usr/local/sbin/nginx_start
+
+#CMD /usr/local/sbin/nginx_start
 
 # CMD /usr/sbin/sshd -e -D
 CMD /usr/local/sbin/rdeck_ssh_start
