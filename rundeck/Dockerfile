@@ -6,4 +6,4 @@ RUN  sudo apt-get update && \
 
 COPY data/resources.xml /home/rundeck
 COPY data/linux_id_rsa /home/rundeck
-COPY data/plugins/ . /home/rundeck/libext
+COPY data/plugins/. /home/rundeck/libext
