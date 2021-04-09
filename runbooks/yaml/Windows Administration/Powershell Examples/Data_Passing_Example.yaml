@@ -1,0 +1,52 @@
+- defaultTab: nodes
+  description: |-
+    Basic Powershell data passing example. This job definition requires a remote Windows node configured on Rundeck.
+
+    Configuration: https://github.com/rundeck-plugins/py-winrm-plugin#configuration
+
+    Model source entry example: https://github.com/rundeck-plugins/py-winrm-plugin#node-definition-example
+  executionEnabled: true
+  group: Windows/PowerShell Examples
+  id: 4a41cd82-1566-4af6-9b46-712e88325fe3
+  loglevel: INFO
+  name: Data Passing Example
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: 'name: ${option.windows_node}'
+  nodesSelectedByDefault: true
+  options:
+  - label: Windows node filter
+    name: windows_node
+    value: windows
+  - name: myvalue
+    value: world
+  plugins:
+    ExecutionLifecycle: null
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - description: Create the data value from powershell script
+      fileExtension: .ps1
+      interpreterArgsQuoted: false
+      plugins:
+        LogFilter:
+        - config:
+            invalidKeyPattern: \s|\$|\{|\}|\\
+            logData: 'true'
+            regex: ^(my_data)\s*=\s*(.+)$
+          type: key-value-data
+      script: write-host "my_data=@option.myvalue@"
+      scriptInterpreter: powershell.exe
+    - fileExtension: .ps1
+      interpreterArgsQuoted: false
+      script: write-host "hello @data.my_data@"
+      scriptInterpreter: powershell.exe
+    keepgoing: false
+    strategy: node-first
+  uuid: 4a41cd82-1566-4af6-9b46-712e88325fe3
