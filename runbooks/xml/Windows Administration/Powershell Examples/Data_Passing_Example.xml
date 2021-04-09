@@ -1,0 +1,62 @@
+<joblist>
+  <job>
+    <context>
+      <options preserveOrder='true'>
+        <option name='windows_node' value='windows'>
+          <label>Windows node filter</label>
+        </option>
+        <option name='myvalue' value='world' />
+      </options>
+    </context>
+    <defaultTab>nodes</defaultTab>
+    <description><![CDATA[Basic Powershell data passing example. This job definition requires a remote Windows node configured on Rundeck.
+
+Configuration: https://github.com/rundeck-plugins/py-winrm-plugin#configuration
+
+Model source entry example: https://github.com/rundeck-plugins/py-winrm-plugin#node-definition-example]]></description>
+    <dispatch>
+      <excludePrecedence>true</excludePrecedence>
+      <keepgoing>false</keepgoing>
+      <rankOrder>ascending</rankOrder>
+      <successOnEmptyNodeFilter>false</successOnEmptyNodeFilter>
+      <threadcount>1</threadcount>
+    </dispatch>
+    <executionEnabled>true</executionEnabled>
+    <group>Windows/PowerShell Examples</group>
+    <id>4a41cd82-1566-4af6-9b46-712e88325fe3</id>
+    <loglevel>INFO</loglevel>
+    <name>Data Passing Example</name>
+    <nodeFilterEditable>false</nodeFilterEditable>
+    <nodefilters>
+      <filter>name: ${option.windows_node}</filter>
+    </nodefilters>
+    <nodesSelectedByDefault>true</nodesSelectedByDefault>
+    <plugins />
+    <scheduleEnabled>true</scheduleEnabled>
+    <sequence keepgoing='false' strategy='node-first'>
+      <command>
+        <description>Create the data value from powershell script</description>
+        <fileExtension>.ps1</fileExtension>
+        <plugins>
+          <LogFilter type='key-value-data'>
+            <config>
+              <invalidKeyPattern>\s|\$|\{|\}|\\</invalidKeyPattern>
+              <logData>true</logData>
+              <regex>^(my_data)\s*=\s*(.+)$</regex>
+            </config>
+          </LogFilter>
+        </plugins>
+        <script><![CDATA[write-host "my_data=@option.myvalue@"]]></script>
+        <scriptargs />
+        <scriptinterpreter>powershell.exe</scriptinterpreter>
+      </command>
+      <command>
+        <fileExtension>.ps1</fileExtension>
+        <script><![CDATA[write-host "hello @data.my_data@"]]></script>
+        <scriptargs />
+        <scriptinterpreter>powershell.exe</scriptinterpreter>
+      </command>
+    </sequence>
+    <uuid>4a41cd82-1566-4af6-9b46-712e88325fe3</uuid>
+  </job>
+</joblist>

@@ -1,0 +1,54 @@
+<joblist>
+  <job>
+    <context>
+      <options preserveOrder='true'>
+        <option name='windows_node' value='windows'>
+          <label>Windows node filter</label>
+        </option>
+        <option name='arg1' value='hello'>
+          <label>First Argument</label>
+        </option>
+        <option name='arg2' value='world'>
+          <label>second argument</label>
+        </option>
+      </options>
+    </context>
+    <defaultTab>nodes</defaultTab>
+    <description><![CDATA[Basic Powershell script with arguments example. This job definition requires a remote Windows node configured on Rundeck.
+
+Configuration: https://github.com/rundeck-plugins/py-winrm-plugin#configuration
+
+Model source entry example: https://github.com/rundeck-plugins/py-winrm-plugin#node-definition-example]]></description>
+    <dispatch>
+      <excludePrecedence>true</excludePrecedence>
+      <keepgoing>false</keepgoing>
+      <rankOrder>ascending</rankOrder>
+      <successOnEmptyNodeFilter>false</successOnEmptyNodeFilter>
+      <threadcount>1</threadcount>
+    </dispatch>
+    <executionEnabled>true</executionEnabled>
+    <group>Windows/PowerShell Examples</group>
+    <id>89b16213-f178-47c0-92e9-f3b3a9465799</id>
+    <loglevel>INFO</loglevel>
+    <name>PowerShell Script Example</name>
+    <nodeFilterEditable>false</nodeFilterEditable>
+    <nodefilters>
+      <filter>name: ${option.windows_node}</filter>
+    </nodefilters>
+    <nodesSelectedByDefault>true</nodesSelectedByDefault>
+    <plugins />
+    <scheduleEnabled>true</scheduleEnabled>
+    <sequence keepgoing='false' strategy='node-first'>
+      <command>
+        <fileExtension>.ps1</fileExtension>
+        <script><![CDATA[write-host "There are a total of $($args.count) arguments"
+for ( $i = 0; $i -lt $args.count; $i++ ) {
+    write-host "Argument  $i is $($args[$i])"
+} ]]></script>
+        <scriptargs>${option.arg1} ${option.arg2}</scriptargs>
+        <scriptinterpreter>powershell.exe</scriptinterpreter>
+      </command>
+    </sequence>
+    <uuid>89b16213-f178-47c0-92e9-f3b3a9465799</uuid>
+  </job>
+</joblist>
