@@ -22,6 +22,8 @@ services:
         image: mysql:8
         expose:
           - 3306
+        cap_add:
+          - SYS_NICE  # CAP_SYS_NICE reduces error messages in console
         environment:
           - MYSQL_ROOT_PASSWORD=root
           - MYSQL_DATABASE=rundeck

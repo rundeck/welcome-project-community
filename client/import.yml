@@ -13,6 +13,14 @@ acls:
 
 users:
   - username: alice
-    email: alice@rundeck.com
+    email: alice@rundeck.io
   - username: bonny
-    email: bonny@rundeck.com
+    email: bonny@rundeck.io
+  - username: charles
+    email: charles@rundeck.io
+  - username: donny
+    email: donny@rundeck.io
+  - username: eliot
+    email: eliot@rundeck.io
+  - username: fred
+    email: fred@rundeck.io

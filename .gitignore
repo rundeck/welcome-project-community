@@ -1,0 +1,8 @@
+.key
+.idea
+client/.DS_Store
+.DS_Store
+*.key
+data/mysql
+client/rundeck-cli/node_modules
+client/rundeck-cli/package-lock.json
