@@ -1,0 +1,69 @@
+- defaultTab: nodes
+  description: |-
+    List Windows Services. This job definition requires a remote Windows node configured on Rundeck.
+
+    Configuration: https://github.com/rundeck-plugins/py-winrm-plugin#configuration
+
+    Model source entry example: https://github.com/rundeck-plugins/py-winrm-plugin#node-definition-example
+  executionEnabled: true
+  group: Windows/Services Operations
+  id: f7b67bf8-d56a-47f5-a329-a968df388fb3
+  loglevel: INFO
+  name: Restart a Service
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: 'name: ${option.windows_node}'
+  nodesSelectedByDefault: true
+  notification:
+    onfailure:
+      email:
+        attachLog: 'true'
+        attachLogInFile: true
+        recipients: infra@example.org
+        subject: Service Restart failed
+  notifyAvgDurationThreshold: null
+  options:
+  - label: Windows node filter
+    name: windows_node
+    value: windows
+  - enforced: true
+    label: Windows service name
+    name: service
+    value: spooler
+    values:
+    - spooler
+    valuesListDelimiter: ','
+  plugins:
+    ExecutionLifecycle: null
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - fileExtension: .ps1
+      interpreterArgsQuoted: false
+      script: |
+        $arrService = Get-Service -Name @option.service@
+
+        Restart-Service -Name @option.service@
+        write-host 'Restarting @option.service@'
+
+        Start-Sleep -seconds 10
+
+        $arrService.Refresh()
+
+        if ($arrService.Status -eq 'Running')
+        {
+            Write-Host '@option.service@ is now Running'
+        } else {
+            Write-Host '@option.service@ is Stopped, notyfing...'
+            exit 1
+        }
+      scriptInterpreter: powershell.exe
+    keepgoing: false
+    strategy: node-first
+  uuid: f7b67bf8-d56a-47f5-a329-a968df388fb3

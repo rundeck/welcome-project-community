@@ -1,0 +1,56 @@
+<joblist>
+  <job>
+    <context>
+      <options preserveOrder='true'>
+        <option name='windows_node' value='windows'>
+          <label>Windows node filter</label>
+        </option>
+        <option enforcedvalues='true' name='feature' value='Telnet-Client' values='Telnet-Client,Web-Server' valuesListDelimiter=','>
+          <label>Feature</label>
+        </option>
+      </options>
+    </context>
+    <defaultTab>nodes</defaultTab>
+    <description><![CDATA[Install a Windows Feature. This job definition requires a remote Windows node configured on Rundeck.
+
+Configuration: https://github.com/rundeck-plugins/py-winrm-plugin#configuration
+
+Model source entry example: https://github.com/rundeck-plugins/py-winrm-plugin#node-definition-example]]></description>
+    <dispatch>
+      <excludePrecedence>true</excludePrecedence>
+      <keepgoing>false</keepgoing>
+      <rankOrder>ascending</rankOrder>
+      <successOnEmptyNodeFilter>false</successOnEmptyNodeFilter>
+      <threadcount>1</threadcount>
+    </dispatch>
+    <executionEnabled>true</executionEnabled>
+    <group>Windows/Routine Operations</group>
+    <id>41ae588e-eff2-423f-83de-3f3c701098ce</id>
+    <loglevel>INFO</loglevel>
+    <name>Deploying Feature</name>
+    <nodeFilterEditable>false</nodeFilterEditable>
+    <nodefilters>
+      <filter>name: ${option.windows_node}</filter>
+    </nodefilters>
+    <nodesSelectedByDefault>true</nodesSelectedByDefault>
+    <plugins />
+    <scheduleEnabled>true</scheduleEnabled>
+    <sequence keepgoing='false' strategy='node-first'>
+      <command>
+        <description>Windows needs an update?</description>
+        <fileExtension>.ps1</fileExtension>
+        <plugins />
+        <script><![CDATA[if ((Get-WindowsFeature @option.feature@).InstallState -eq "Installed") {
+    Write-Host "@option.feature@ is installed"
+} 
+else {
+    Write-Host "@option.feature@ is not installed and proceeding with Install"
+    Install-WindowsFeature -Name @option.feature@
+}]]></script>
+        <scriptargs />
+        <scriptinterpreter>powershell.exe</scriptinterpreter>
+      </command>
+    </sequence>
+    <uuid>41ae588e-eff2-423f-83de-3f3c701098ce</uuid>
+  </job>
+</joblist>

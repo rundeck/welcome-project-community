@@ -1,0 +1,51 @@
+<joblist>
+  <job>
+    <context>
+      <options preserveOrder='true'>
+        <option name='windows_node' value='windows'>
+          <label>Windows node filter</label>
+        </option>
+      </options>
+    </context>
+    <defaultTab>nodes</defaultTab>
+    <description><![CDATA[Obtain Windows Operating System information. This job definition requires a remote Windows node configured on Rundeck.
+
+Configuration: https://github.com/rundeck-plugins/py-winrm-plugin#configuration
+
+Model source entry example: https://github.com/rundeck-plugins/py-winrm-plugin#node-definition-example]]></description>
+    <dispatch>
+      <excludePrecedence>true</excludePrecedence>
+      <keepgoing>false</keepgoing>
+      <rankOrder>ascending</rankOrder>
+      <successOnEmptyNodeFilter>false</successOnEmptyNodeFilter>
+      <threadcount>1</threadcount>
+    </dispatch>
+    <executionEnabled>true</executionEnabled>
+    <group>Windows/Gathering Information</group>
+    <id>b8e4aa9a-cdcf-45ce-8e5d-4d1786faef58</id>
+    <loglevel>INFO</loglevel>
+    <name>Get Windows Version</name>
+    <nodeFilterEditable>false</nodeFilterEditable>
+    <nodefilters>
+      <filter>name: ${option.windows_node}</filter>
+    </nodefilters>
+    <nodesSelectedByDefault>true</nodesSelectedByDefault>
+    <plugins />
+    <scheduleEnabled>true</scheduleEnabled>
+    <sequence keepgoing='false' strategy='node-first'>
+      <command>
+        <description>Header message</description>
+        <exec>Write-Host "Windows version:"</exec>
+      </command>
+      <command>
+        <description>Windows Caption</description>
+        <exec>(Get-WmiObject Win32_OperatingSystem).Caption</exec>
+      </command>
+      <command>
+        <description>Windows Version</description>
+        <exec>(Get-WmiObject Win32_OperatingSystem).Version</exec>
+      </command>
+    </sequence>
+    <uuid>b8e4aa9a-cdcf-45ce-8e5d-4d1786faef58</uuid>
+  </job>
+</joblist>

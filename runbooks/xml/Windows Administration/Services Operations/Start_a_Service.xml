@@ -1,0 +1,66 @@
+<joblist>
+  <job>
+    <context>
+      <options preserveOrder='true'>
+        <option name='windows_node' value='windows'>
+          <label>Windows node filter</label>
+        </option>
+        <option enforcedvalues='true' name='service' value='spooler' values='spooler,ssh-agent' valuesListDelimiter=','>
+          <label>Windows service name</label>
+        </option>
+      </options>
+    </context>
+    <defaultTab>nodes</defaultTab>
+    <description><![CDATA[List Windows Services. This job definition requires a remote Windows node configured on Rundeck.
+
+Configuration: https://github.com/rundeck-plugins/py-winrm-plugin#configuration
+
+Model source entry example: https://github.com/rundeck-plugins/py-winrm-plugin#node-definition-example]]></description>
+    <dispatch>
+      <excludePrecedence>true</excludePrecedence>
+      <keepgoing>false</keepgoing>
+      <rankOrder>ascending</rankOrder>
+      <successOnEmptyNodeFilter>false</successOnEmptyNodeFilter>
+      <threadcount>1</threadcount>
+    </dispatch>
+    <executionEnabled>true</executionEnabled>
+    <group>Windows/Services Operations</group>
+    <id>0872ef27-c436-4d18-a721-59aed4688f4f</id>
+    <loglevel>INFO</loglevel>
+    <name>Start a Service</name>
+    <nodeFilterEditable>false</nodeFilterEditable>
+    <nodefilters>
+      <filter>name: ${option.windows_node}</filter>
+    </nodefilters>
+    <nodesSelectedByDefault>true</nodesSelectedByDefault>
+    <plugins />
+    <scheduleEnabled>true</scheduleEnabled>
+    <sequence keepgoing='false' strategy='node-first'>
+      <command>
+        <description>Start the service</description>
+        <fileExtension>.ps1</fileExtension>
+        <script><![CDATA[$arrService = Get-Service -Name @option.service@
+
+if ($arrService.Status -ne 'Running')
+{
+    Start-Service -Name @option.service@
+    write-host 'Starting @option.service@'
+    
+    Start-Sleep -seconds 10
+    
+    $arrService.Refresh()
+    
+    if ($arrService.Status -eq 'Running')
+    {
+        Write-Host '@option.service@ is now Running'
+    }
+} else {
+    write-host '@option.service@ is running, nothing to do.'
+}]]></script>
+        <scriptargs />
+        <scriptinterpreter>powershell.exe</scriptinterpreter>
+      </command>
+    </sequence>
+    <uuid>0872ef27-c436-4d18-a721-59aed4688f4f</uuid>
+  </job>
+</joblist>

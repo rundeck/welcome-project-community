@@ -1,0 +1,52 @@
+- defaultTab: nodes
+  description: |-
+    Stop a Windows Service. This job definition requires a remote Windows node configured on Rundeck.
+
+    Configuration: https://github.com/rundeck-plugins/py-winrm-plugin#configuration
+
+    Model source entry example: https://github.com/rundeck-plugins/py-winrm-plugin#node-definition-example
+  executionEnabled: true
+  group: Windows/Services Operations
+  id: 6c6a993d-6fc2-46c7-a016-441e8a781d07
+  loglevel: INFO
+  name: Stop a Service
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: 'name: ${option.windows_node}'
+  nodesSelectedByDefault: true
+  options:
+  - label: Windows node filter
+    name: windows_node
+    value: windows
+  - enforced: true
+    label: Windows service name
+    name: service
+    value: spooler
+    values:
+    - spooler
+    - ssh-agent
+    valuesListDelimiter: ','
+  plugins:
+    ExecutionLifecycle: null
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - description: Stop a service
+      fileExtension: .ps1
+      interpreterArgsQuoted: false
+      script: "$arrService = Get-Service -Name @option.service@\n\nif ($arrService.Status\
+        \ -ne 'Stopped')\n{\n    Stop-Service -Name @option.service@\n    write-host\
+        \ 'Stopping @option.service@'\n    \n    Start-Sleep -seconds 10\n    \n \
+        \   $arrService.Refresh()\n    \n    if ($arrService.Status -eq 'Stopped')\n\
+        \    {\n        Write-Host '@option.service@ is now Stopped'\n    }\n} else\
+        \ {\n    write-host '@option.service@ is stopped, nothing to do.'\n}"
+      scriptInterpreter: powershell.exe
+    keepgoing: false
+    strategy: node-first
+  uuid: 6c6a993d-6fc2-46c7-a016-441e8a781d07

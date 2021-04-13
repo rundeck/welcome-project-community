@@ -1,0 +1,52 @@
+- defaultTab: nodes
+  description: |-
+    List Windows Services. This job definition requires a remote Windows node configured on Rundeck.
+
+    Configuration: https://github.com/rundeck-plugins/py-winrm-plugin#configuration
+
+    Model source entry example: https://github.com/rundeck-plugins/py-winrm-plugin#node-definition-example
+  executionEnabled: true
+  group: Windows/Services Operations
+  id: 0872ef27-c436-4d18-a721-59aed4688f4f
+  loglevel: INFO
+  name: Start a Service
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: 'name: ${option.windows_node}'
+  nodesSelectedByDefault: true
+  options:
+  - label: Windows node filter
+    name: windows_node
+    value: windows
+  - enforced: true
+    label: Windows service name
+    name: service
+    value: spooler
+    values:
+    - spooler
+    - ssh-agent
+    valuesListDelimiter: ','
+  plugins:
+    ExecutionLifecycle: null
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - description: Start the service
+      fileExtension: .ps1
+      interpreterArgsQuoted: false
+      script: "$arrService = Get-Service -Name @option.service@\n\nif ($arrService.Status\
+        \ -ne 'Running')\n{\n    Start-Service -Name @option.service@\n    write-host\
+        \ 'Starting @option.service@'\n    \n    Start-Sleep -seconds 10\n    \n \
+        \   $arrService.Refresh()\n    \n    if ($arrService.Status -eq 'Running')\n\
+        \    {\n        Write-Host '@option.service@ is now Running'\n    }\n} else\
+        \ {\n    write-host '@option.service@ is running, nothing to do.'\n}"
+      scriptInterpreter: powershell.exe
+    keepgoing: false
+    strategy: node-first
+  uuid: 0872ef27-c436-4d18-a721-59aed4688f4f

@@ -1,0 +1,47 @@
+- defaultTab: nodes
+  description: |-
+    Basic Powershell script with arguments example. This job definition requires a remote Windows node configured on Rundeck.
+
+    Configuration: https://github.com/rundeck-plugins/py-winrm-plugin#configuration
+
+    Model source entry example: https://github.com/rundeck-plugins/py-winrm-plugin#node-definition-example
+  executionEnabled: true
+  group: Windows/PowerShell Examples
+  id: 89b16213-f178-47c0-92e9-f3b3a9465799
+  loglevel: INFO
+  name: PowerShell Script Example
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: 'name: ${option.windows_node}'
+  nodesSelectedByDefault: true
+  options:
+  - label: Windows node filter
+    name: windows_node
+    value: windows
+  - label: First Argument
+    name: arg1
+    value: hello
+  - label: second argument
+    name: arg2
+    value: world
+  plugins:
+    ExecutionLifecycle: null
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - args: ${option.arg1} ${option.arg2}
+      fileExtension: .ps1
+      interpreterArgsQuoted: false
+      script: "write-host \"There are a total of $($args.count) arguments\"\nfor (\
+        \ $i = 0; $i -lt $args.count; $i++ ) {\n    write-host \"Argument  $i is $($args[$i])\"\
+        \n} "
+      scriptInterpreter: powershell.exe
+    keepgoing: false
+    strategy: node-first
+  uuid: 89b16213-f178-47c0-92e9-f3b3a9465799

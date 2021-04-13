@@ -1,0 +1,70 @@
+<joblist>
+  <job>
+    <context>
+      <options preserveOrder='true'>
+        <option name='windows_node' value='windows'>
+          <label>Windows node filter</label>
+        </option>
+        <option enforcedvalues='true' name='service' value='spooler' values='spooler' valuesListDelimiter=','>
+          <label>Windows service name</label>
+        </option>
+      </options>
+    </context>
+    <defaultTab>nodes</defaultTab>
+    <description><![CDATA[List Windows Services. This job definition requires a remote Windows node configured on Rundeck.
+
+Configuration: https://github.com/rundeck-plugins/py-winrm-plugin#configuration
+
+Model source entry example: https://github.com/rundeck-plugins/py-winrm-plugin#node-definition-example]]></description>
+    <dispatch>
+      <excludePrecedence>true</excludePrecedence>
+      <keepgoing>false</keepgoing>
+      <rankOrder>ascending</rankOrder>
+      <successOnEmptyNodeFilter>false</successOnEmptyNodeFilter>
+      <threadcount>1</threadcount>
+    </dispatch>
+    <executionEnabled>true</executionEnabled>
+    <group>Windows/Services Operations</group>
+    <id>f7b67bf8-d56a-47f5-a329-a968df388fb3</id>
+    <loglevel>INFO</loglevel>
+    <name>Restart a Service</name>
+    <nodeFilterEditable>false</nodeFilterEditable>
+    <nodefilters>
+      <filter>name: ${option.windows_node}</filter>
+    </nodefilters>
+    <nodesSelectedByDefault>true</nodesSelectedByDefault>
+    <notification>
+      <onfailure>
+        <email attachLog='true' attachLogInFile='true' recipients='infra@example.org' subject='Service Restart failed' />
+      </onfailure>
+    </notification>
+    <notifyAvgDurationThreshold />
+    <plugins />
+    <scheduleEnabled>true</scheduleEnabled>
+    <sequence keepgoing='false' strategy='node-first'>
+      <command>
+        <fileExtension>.ps1</fileExtension>
+        <script><![CDATA[$arrService = Get-Service -Name @option.service@
+
+Restart-Service -Name @option.service@
+write-host 'Restarting @option.service@'
+
+Start-Sleep -seconds 10
+
+$arrService.Refresh()
+
+if ($arrService.Status -eq 'Running')
+{
+    Write-Host '@option.service@ is now Running'
+} else {
+    Write-Host '@option.service@ is Stopped, notyfing...'
+    exit 1
+}
+]]></script>
+        <scriptargs />
+        <scriptinterpreter>powershell.exe</scriptinterpreter>
+      </command>
+    </sequence>
+    <uuid>f7b67bf8-d56a-47f5-a329-a968df388fb3</uuid>
+  </job>
+</joblist>

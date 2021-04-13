@@ -12,12 +12,23 @@
     <description><![CDATA[Basic Python 3 inline-script example:
 
 More info here: https://docs.rundeck.com/docs/manual/node-steps/builtin.html#script-step]]></description>
+    <dispatch>
+      <excludePrecedence>true</excludePrecedence>
+      <keepgoing>false</keepgoing>
+      <rankOrder>ascending</rankOrder>
+      <successOnEmptyNodeFilter>false</successOnEmptyNodeFilter>
+      <threadcount>1</threadcount>
+    </dispatch>
     <executionEnabled>true</executionEnabled>
     <group>Basic Examples/Interpreters</group>
     <id>c38eb6ca-37df-4568-8261-05547564daee</id>
     <loglevel>INFO</loglevel>
     <name>Python 3 Inline-Script</name>
     <nodeFilterEditable>false</nodeFilterEditable>
+    <nodefilters>
+      <filter>name: node00</filter>
+    </nodefilters>
+    <nodesSelectedByDefault>true</nodesSelectedByDefault>
     <plugins />
     <scheduleEnabled>true</scheduleEnabled>
     <sequence keepgoing='false' strategy='node-first'>
@@ -28,7 +39,7 @@ More info here: https://docs.rundeck.com/docs/manual/node-steps/builtin.html#scr
 years = @option.years@
 print("I have been {} for {} years ".format(title, years))]]></script>
         <scriptargs />
-        <scriptinterpreter>/usr/bin/python3.8</scriptinterpreter>
+        <scriptinterpreter>python3</scriptinterpreter>
       </command>
     </sequence>
     <uuid>c38eb6ca-37df-4568-8261-05547564daee</uuid>

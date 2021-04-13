@@ -1,0 +1,40 @@
+- defaultTab: nodes
+  description: |-
+    Obtain Windows Operating System information. This job definition requires a remote Windows node configured on Rundeck.
+
+    Configuration: https://github.com/rundeck-plugins/py-winrm-plugin#configuration
+
+    Model source entry example: https://github.com/rundeck-plugins/py-winrm-plugin#node-definition-example
+  executionEnabled: true
+  group: Windows/Gathering Information
+  id: b8e4aa9a-cdcf-45ce-8e5d-4d1786faef58
+  loglevel: INFO
+  name: Get Windows Version
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: 'name: ${option.windows_node}'
+  nodesSelectedByDefault: true
+  options:
+  - label: Windows node filter
+    name: windows_node
+    value: windows
+  plugins:
+    ExecutionLifecycle: null
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - description: Header message
+      exec: Write-Host "Windows version:"
+    - description: Windows Caption
+      exec: (Get-WmiObject Win32_OperatingSystem).Caption
+    - description: Windows Version
+      exec: (Get-WmiObject Win32_OperatingSystem).Version
+    keepgoing: false
+    strategy: node-first
+  uuid: b8e4aa9a-cdcf-45ce-8e5d-4d1786faef58

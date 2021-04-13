@@ -9,6 +9,15 @@
   loglevel: INFO
   name: Python 3 Inline-Script
   nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: 'name: node00'
+  nodesSelectedByDefault: true
   options:
   - label: Title name
     name: name
@@ -27,7 +36,7 @@
         title = "@option.name@"
         years = @option.years@
         print("I have been {} for {} years ".format(title, years))
-      scriptInterpreter: /usr/bin/python3.8
+      scriptInterpreter: python3
     keepgoing: false
     strategy: node-first
   uuid: c38eb6ca-37df-4568-8261-05547564daee

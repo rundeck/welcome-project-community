@@ -1,0 +1,52 @@
+- defaultTab: nodes
+  description: |-
+    Install a Windows Feature. This job definition requires a remote Windows node configured on Rundeck.
+
+    Configuration: https://github.com/rundeck-plugins/py-winrm-plugin#configuration
+
+    Model source entry example: https://github.com/rundeck-plugins/py-winrm-plugin#node-definition-example
+  executionEnabled: true
+  group: Windows/Routine Operations
+  id: 41ae588e-eff2-423f-83de-3f3c701098ce
+  loglevel: INFO
+  name: Deploying Feature
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: 'name: ${option.windows_node}'
+  nodesSelectedByDefault: true
+  options:
+  - label: Windows node filter
+    name: windows_node
+    value: windows
+  - enforced: true
+    label: Feature
+    name: feature
+    value: Telnet-Client
+    values:
+    - Telnet-Client
+    - Web-Server
+    valuesListDelimiter: ','
+  plugins:
+    ExecutionLifecycle: null
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - description: Windows needs an update?
+      fileExtension: .ps1
+      interpreterArgsQuoted: false
+      plugins:
+        LogFilter: []
+      script: "if ((Get-WindowsFeature @option.feature@).InstallState -eq \"Installed\"\
+        ) {\n    Write-Host \"@option.feature@ is installed\"\n} \nelse {\n    Write-Host\
+        \ \"@option.feature@ is not installed and proceeding with Install\"\n    Install-WindowsFeature\
+        \ -Name @option.feature@\n}"
+      scriptInterpreter: powershell.exe
+    keepgoing: false
+    strategy: node-first
+  uuid: 41ae588e-eff2-423f-83de-3f3c701098ce
