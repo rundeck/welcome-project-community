@@ -15,6 +15,8 @@ services:
             RUNDECK_DATABASE_PASSWORD: rundeck
             RUNDECK_DATABASE_URL: jdbc:mariadb://mysql/rundeck?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
             RUNDECK_SERVER_ADDRESS: 0.0.0.0
+            RUNDECK_FEATURE_UINEXT_NAME: uiNext
+            RUNDECK_FEATURE_UINEXT_ENABLED: 'true'
         ports:
           - 4440:4440
     mysql:
