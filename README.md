@@ -1,8 +1,8 @@
 ![Rundeck](https://www.rundeck.com/hubfs/Images/logos/rundeck-logotype-512.png)
 
-# Welcome to the Rundeck Community Runbooks
+# Welcome to the Rundeck Community Welcome Project
 
-This repo has a complete Docker environment with a project that includes sample jobs showing how Rundeck can integrate to turn alerts into action.  
+This repo has a complete Docker environment with a project that includes sample jobs showing how Rundeck can integrate to turn alerts into action using our Community software edition.
 
 
 ## Setup / Starting the environment
