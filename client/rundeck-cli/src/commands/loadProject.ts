@@ -210,7 +210,7 @@ builder(yargs: Argv) {
 
                   fetch(`${rundeckUrl}/api/38/project/${project_name}/import?importConfig=true&importACL=true&jobUuidOption=preserve&importWebhooks=true`,
                       { method: 'PUT', body: file, headers:headers, })
-                      .then(res => console.log(res));
+                      //.then(res => console.log(res));
 
               }catch(e){
                   console.log("Error importing project" + project_name + ":" + e);
