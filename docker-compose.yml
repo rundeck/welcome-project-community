@@ -44,7 +44,7 @@ services:
         - ./data/linux_id_rsa:/rundeck-cli/data/linux_id_rsa
         - ./data/user.aclpolicy:/rundeck-cli/data/user.aclpolicy
     node:
-      container_name: node00
+      container_name: node1
       image: rundeck/node-demo
       ports:
          - "22"
@@ -54,7 +54,7 @@ services:
         - ./data/linux_id_rsa:/configuration/id_rsa
         - ./data/linux_id_rsa.pub:/configuration/id_rsa.pub
     node2:
-      container_name: node01
+      container_name: node2
       image: rundeck/node-demo
       ports:
          - "22"
@@ -64,7 +64,7 @@ services:
         - ./data/linux_id_rsa:/configuration/id_rsa
         - ./data/linux_id_rsa.pub:/configuration/id_rsa.pub
     node3:
-      container_name: node02
+      container_name: node3
       image: rundeck/node-demo
       ports:
          - "22"
@@ -73,3 +73,12 @@ services:
       volumes:
         - ./data/linux_id_rsa:/configuration/id_rsa
         - ./data/linux_id_rsa.pub:/configuration/id_rsa.pub
+    ciao:
+        container_name: ciao
+        image: brotandgames/ciao
+        ports:
+          - '3000:3000'
+        environment:
+          - 'BASIC_AUTH_USERNAME=admin'
+          - 'BASIC_AUTH_PASSWORD=admin'
+          - 'CIAO_WEBHOOK_ENDPOINT_RUNDECK=http://rundeck:4440/api/38/webhook/fgl0TfHvIDLVXWUXtYDE9Ctxw7dctaxw#Server_Diagnostics_and_Recovery'
