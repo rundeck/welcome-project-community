@@ -1,6 +1,6 @@
 projects:
-  - name: runbooks-project
-    archive: projects/runbooks-project.jar
+  - name: welcome-project-community
+    archive: projects/welcome-project-community.jar
 
 keys:
   - path: node/node.key
