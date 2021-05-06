@@ -1,0 +1,47 @@
+- defaultTab: output
+  description: |-
+    Check the status of specified Linux Process
+
+    Default Nodes: osName: Linux
+
+    ### Details:
+    This job hightlights how to use Log Filters to highlight output.  Enter the name of the process you'd like to check for (default: `java`)
+  executionEnabled: true
+  group: Demo/Linux
+  id: e54d9a97-e81d-4191-b285-cf99440d2ed6
+  loglevel: INFO
+  name: Process status
+  nodeFilterEditable: true
+  nodefilters:
+    dispatch:
+      excludePrecedence: false
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: 'osName: Linux'
+  nodesSelectedByDefault: true
+  options:
+  - description: Enter the name of the process that you want to check.
+    name: process
+    value: java
+  plugins:
+    ExecutionLifecycle: null
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - description: linux-process-status
+      script: |-
+        pgrep @option.process@  > /dev/null 2>&1
+
+        if [ $? -eq 0 ]
+        then
+          echo "@option.process@ is running on server @node.name@"
+        else
+          echo "@option.process@ is not running on server @node.name@"
+        fi
+    keepgoing: false
+    strategy: node-first
+  tags: 'demo,diagnose,linux'
+  uuid: e54d9a97-e81d-4191-b285-cf99440d2ed6
