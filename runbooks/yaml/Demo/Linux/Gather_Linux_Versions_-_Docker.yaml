@@ -1,0 +1,29 @@
+- defaultTab: nodes
+  description: Example Job that gathers Linux Version Information
+  executionEnabled: true
+  group: Demo/Linux
+  id: 3a13fca8-4d42-417e-812b-5f2f700dccb3
+  loglevel: INFO
+  name: Gather Linux Versions - Docker
+  nodeFilterEditable: true
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: '.*'
+  nodesSelectedByDefault: true
+  plugins:
+    ExecutionLifecycle: {}
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - description: Get Linux Version Info
+      exec: uname -a
+    keepgoing: false
+    strategy: node-first
+  tags: 'demo,diagnose,linux'
+  uuid: 3a13fca8-4d42-417e-812b-5f2f700dccb3
