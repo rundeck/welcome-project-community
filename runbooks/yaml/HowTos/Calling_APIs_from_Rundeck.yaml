@@ -1,0 +1,34 @@
+- defaultTab: nodes
+  description: |-
+    This job definition corresponds to the Calling APIs How To article at:
+    [https://docs.rundeck.com/docs/learning/howto/calling-apis.html](https://docs.rundeck.com/docs/learning/howto/calling-apis.html)
+  executionEnabled: true
+  group: HowTos
+  id: b7df7b51-c3d6-4a5a-8420-0ddd22f024f0
+  loglevel: INFO
+  name: Calling APIs from Rundeck
+  nodeFilterEditable: false
+  plugins:
+    ExecutionLifecycle: {}
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - configuration:
+        authentication: None
+        body: '{"myBodyValues":[{"body1":"value1"},{"body2":"value2"}]}'
+        checkResponseCode: 'false'
+        headers: '{"MyHeader":"test"}'
+        method: POST
+        printResponse: 'true'
+        printResponseToFile: 'false'
+        proxySettings: 'false'
+        remoteUrl: https://httpbin.org/anything
+        sslVerify: 'true'
+        timeout: '30000'
+      nodeStep: false
+      type: edu.ohio.ais.rundeck.HttpWorkflowStepPlugin
+    keepgoing: false
+    strategy: node-first
+  tags: howto
+  uuid: b7df7b51-c3d6-4a5a-8420-0ddd22f024f0
