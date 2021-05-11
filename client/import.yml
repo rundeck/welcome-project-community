@@ -1,6 +1,6 @@
 projects:
   - name: welcome-project-community
-    archive: projects/welcome-project-community.jar
+    archive: projects/welcome-project-community.rdproject.jar
 
 keys:
   - path: node/node.key
