@@ -1,0 +1,45 @@
+- defaultTab: output
+  description: ''
+  executionEnabled: true
+  group: Demo/Configuration Jobs
+  id: dcdb13b1-b96b-43f1-b2cd-b4c8335e5a36
+  loglevel: INFO
+  name: Install Rundeck CLI
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: 'osFamily: unix'
+  nodesSelectedByDefault: true
+  plugins:
+    ExecutionLifecycle: {}
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - description: Get Script
+      exec: curl -s https://packagecloud.io/install/repositories/pagerduty/rundeck/script.deb.sh
+        -o script.deb.sh
+    - description: Run Install Script
+      interpreterArgsQuoted: false
+      script: os=any dist=any bash ./script.deb.sh
+      scriptInterpreter: sudo
+    - description: Update Packages
+      exec: sudo apt-get update
+    - description: Check for Java
+      errorhandler:
+        exec: sudo apt-get install -y openjdk-11-jre
+        keepgoingOnSuccess: true
+      exec: java --version
+    - description: Check for RD Client
+      errorhandler:
+        exec: sudo apt-get install -y rundeck-cli
+        keepgoingOnSuccess: true
+      exec: rd version
+    keepgoing: false
+    strategy: node-first
+  uuid: dcdb13b1-b96b-43f1-b2cd-b4c8335e5a36
