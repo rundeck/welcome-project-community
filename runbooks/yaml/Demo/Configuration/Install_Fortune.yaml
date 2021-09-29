@@ -1,0 +1,27 @@
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  group: Demo/Configuration Jobs
+  id: 64bfce2c-0e1c-4d5f-8f1f-e70a6b65259d
+  loglevel: INFO
+  name: Install Fortune
+  nodeFilterEditable: true
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: true
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '3'
+    filter: 'osFamily: unix'
+  nodesSelectedByDefault: true
+  plugins:
+    ExecutionLifecycle: {}
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - exec: sudo apt-get install -y fortune
+    keepgoing: false
+    strategy: node-first
+  uuid: 64bfce2c-0e1c-4d5f-8f1f-e70a6b65259d
