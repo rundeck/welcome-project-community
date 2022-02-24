@@ -1,0 +1,54 @@
+- defaultTab: nodes
+  description: |-
+    This Rundeck Job grabs recent logs from a specified Kubernetes selector (e.g. app=cartservice) and posts to the PagerDuty incident.
+
+    This job is a template-job provided by PagerDuty. It is designed to be invoked via [Automation-Actions](https://www.rundeck.com/rundeck-actions)
+
+    Documentation for this workflow can be found in the Learning section of our documentation [here](https://docs.rundeck.com/docs/learning/solutions/auto-incident-kubernetes-logs.html)
+  executionEnabled: true
+  group: Auto-Diagnostics
+  id: 47e8548e-2c0b-4526-84c0-b5db1727e3f7
+  loglevel: INFO
+  name: Auto-Diagnostics - Kubernetes Logs
+  nodeFilterEditable: false
+  options:
+  - description: 'Selector for defining pods to retrieve logs from. Example: app=paymentservice'
+    label: Kubernetes Selector
+    name: k8s_selector
+    value: app=cartservice
+  - description: Kubernetes namespace.
+    label: namespace
+    name: namespace
+    value: default
+  - hidden: true
+    label: PagerDuty Incident ID
+    name: pd_incident_id
+    value: Q1CS9YFE3M4NMY
+  plugins:
+    ExecutionLifecycle: null
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - exec: echo "Last 5 minutes of pod logs:"
+      plugins:
+        LogFilter:
+        - config:
+            bgcolor: green
+            mode: bold
+            regex: (.*)
+          type: highlight-output
+    - description: Grab logs from all containers within Kubernetes selector
+      exec: kubectl -n ${option.namespace} logs -l ${option.k8s_selector} --all-containers=true
+        --since=5m
+    - exec: echo "Details of pods within service:"
+      plugins:
+        LogFilter:
+        - config:
+            bgcolor: green
+            mode: bold
+            regex: (.*)
+          type: highlight-output
+    - exec: kubectl describe pods --selector=${option.k8s_selector}
+    keepgoing: false
+    strategy: node-first
+  uuid: 47e8548e-2c0b-4526-84c0-b5db1727e3f7
