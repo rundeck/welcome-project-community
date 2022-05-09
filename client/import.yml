@@ -5,7 +5,7 @@ projects:
 keys:
   - path: node/node.key
     type: privateKey
-    file: data/linux_id_rsa
+    file: data/keys/id_rsa
 
 acls:
   - name: UserAccess.aclpolicy

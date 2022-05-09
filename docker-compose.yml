@@ -41,38 +41,30 @@ services:
         RUNDECK_API_URL: http://localhost:4440
         RUNDECK_TOKEN: u5gJoKU3NpS6IC4lFmPQFfDkUlZnQOXp
       volumes:
-        - ./data/linux_id_rsa:/rundeck-cli/data/linux_id_rsa
+        - shared-volume:/rundeck-cli/data/keys/
         - ./data/user.aclpolicy:/rundeck-cli/data/user.aclpolicy
     node:
       container_name: node1
-      image: rundeck/node-demo
+      build:
+        context: node-demo
       ports:
          - "22"
       environment:
         - SSHD_PORT=22
+        - KEY_FILE=/configuration/id_rsa
       volumes:
-        - ./data/linux_id_rsa:/configuration/id_rsa
-        - ./data/linux_id_rsa.pub:/configuration/id_rsa.pub
+        - shared-volume:/configuration/
     node2:
       container_name: node2
-      image: rundeck/node-demo
+      build:
+        context: node-demo
       ports:
          - "22"
       environment:
         - SSHD_PORT=22
+        - KEY_FILE=/configuration/id_rsa
       volumes:
-        - ./data/linux_id_rsa:/configuration/id_rsa
-        - ./data/linux_id_rsa.pub:/configuration/id_rsa.pub
-    node3:
-      container_name: node3
-      image: rundeck/node-demo
-      ports:
-         - "22"
-      environment:
-        - SSHD_PORT=22
-      volumes:
-        - ./data/linux_id_rsa:/configuration/id_rsa
-        - ./data/linux_id_rsa.pub:/configuration/id_rsa.pub
+        - shared-volume:/configuration/
     ciao:
         container_name: ciao
         image: brotandgames/ciao
@@ -82,3 +74,6 @@ services:
           - 'BASIC_AUTH_USERNAME=admin'
           - 'BASIC_AUTH_PASSWORD=admin'
           - 'CIAO_WEBHOOK_ENDPOINT_RUNDECK=http://rundeck:4440/api/38/webhook/fgl0TfHvIDLVXWUXtYDE9Ctxw7dctaxw#Server_Diagnostics_and_Recovery'
+
+volumes:
+  shared-volume:
