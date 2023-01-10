@@ -1,7 +1,7 @@
 import {Argv} from'yargs'
-import {waitForRundeckReady, createStoragePassword, createProject, asyncForEach, createStoragePrivateKey, createAcl} from '../lib/util'
+import {createWaitForRundeckReady, createStoragePassword, createProject, asyncForEach, createStoragePrivateKey, loadConfigYaml, createAcl, runeckLoginToken} from '../lib/util'
 
-import { Rundeck, PasswordCredentialProvider}from 'ts-rundeck'
+import { Rundeck, PasswordCredentialProvider, TokenCredentialProvider,}from 'ts-rundeck'
 import Path from 'path'
 import * as FS from '../async/fs'
 import { JobUuidOption } from 'ts-rundeck/dist/lib/models'
@@ -9,9 +9,12 @@ import YAML from 'yaml'
 import fetch from 'node-fetch';
 import FormData from 'form-data';
 import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript'
+import { RequestPolicyFactory } from "@azure/ms-rest-js"
 
 interface Opts {
     rundeck_url: string,
+    username: string,
+    password: string,
     config_file: string,
     path: string,
     debug: boolean
@@ -43,6 +46,20 @@ builder(yargs: Argv) {
             .option("r", {
                 alias: "rundeck_url",
                 describe: "Rundeck URL",
+                type: 'string',
+                default: false,
+                require: true
+            })
+            .option("ru", {
+                alias: "username",
+                describe: "Rundeck Username",
+                type: 'string',
+                default: false,
+                require: true
+            })
+            .option("rp", {
+                alias: "password",
+                describe: "Rundeck password",
                 type: 'string',
                 default: false,
                 require: true
@@ -83,12 +100,19 @@ builder(yargs: Argv) {
         const keys: Key[] = config.keys;
         const acls: Acl[]  = config.acls;
 
+        const username = opts.username
+        const password = opts.password
 
-        const username = 'admin'
-        const password = 'admin'
-        const client = new Rundeck(new PasswordCredentialProvider(rundeckUrl, username, password), {baseUri: rundeckUrl})
+        const rundeckAuth = await runeckLoginToken(rundeckUrl, username, password)
+        const token = rundeckAuth["token"]
+        const client = rundeckAuth["client"]
+
         console.log("Waiting for Rundeck");
-        await waitForRundeckReady(client);
+        await createWaitForRundeckReady(
+            () => new Rundeck(new PasswordCredentialProvider(rundeckUrl, username, password), {noRetryPolicy: true, baseUri: rundeckUrl}),
+            5 * 60 * 1000
+            );
+
         console.log("Rundeck started!!!");
 
         console.log("----------------------------------");
@@ -182,22 +206,6 @@ builder(yargs: Argv) {
             if(projectImport == true){
               const importFileName = Path.join(path, project.archive);
 
-              const tokenResponse = await client.sendRequest({
-                  headers: {'Content-Type': 'application/json'},
-                  pathTemplate: `/api/36/tokens/{username}`,
-                  pathParameters: {username: username},
-                  baseUrl: rundeckUrl,
-                  method: 'POST',
-                  body: {
-                      "user": username,
-                      "roles": [
-                        "admin",
-                      ],
-                      "duration": "30d"
-                    }
-                });
-
-              let token = tokenResponse.parsedBody.token
               console.log("import project");
 
               try{
@@ -208,7 +216,7 @@ builder(yargs: Argv) {
                       'Content-Type': 'application/zip',
                   }
 
-                  fetch(`${rundeckUrl}/api/38/project/${project_name}/import?importConfig=true&importACL=true&jobUuidOption=preserve&importWebhooks=true`,
+                  fetch(`${rundeckUrl}/api/38/project/${project_name}/import?importConfig=true&importACL=true&jobUuidOption=remove&importWebhooks=true`,
                       { method: 'PUT', body: file, headers:headers, })
                       //.then(res => console.log(res));
 
