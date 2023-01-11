@@ -40,6 +40,8 @@ services:
         RUNDECK_URL: http://rundeck:4440
         RUNDECK_API_URL: http://localhost:4440
         RUNDECK_TOKEN: u5gJoKU3NpS6IC4lFmPQFfDkUlZnQOXp
+        RUNDECK_USER: ${RUNDECK_USER:-admin}
+        RUNDECK_PASSWORD: ${RUNDECK_PASSWORD:-admin}
       volumes:
         - shared-volume:/rundeck-cli/data/keys/
         - ./data/user.aclpolicy:/rundeck-cli/data/user.aclpolicy

@@ -1,13 +1,16 @@
-import {Rundeck} from 'ts-rundeck'
 import * as dotenv from "dotenv";
 import YAML from 'yaml'
+import {WebResource, RequestPolicy, RequestPolicyFactory, RequestPolicyOptions, BaseRequestPolicy, HttpOperationResponse} from '@azure/ms-rest-js'
+import { Rundeck, PasswordCredentialProvider, TokenCredentialProvider}from 'ts-rundeck'
 
+import {combineCookies} from 'ts-rundeck/dist/util'
 
 export function sleep(ms: number): Promise<{}> {
     return new Promise( res => {
         setTimeout(res, ms)
     })
 }
+
 
 export async function waitForRundeckReady(client: Rundeck, timeout = 500000) {
     await createWaitForRundeckReady(() => client, timeout)
@@ -129,10 +132,10 @@ export function loadConfigYaml(importYaml: string): any{
 
     const env = process.env;
 
-    console.log(importYaml);
+    //console.log(importYaml);
 
     Object.keys(env).forEach(function(key) {
-      console.log('export ' + key + '="' + env[key] +'"');
+      //console.log('export ' + key + '="' + env[key] +'"');
       let value = env[key] as string;
 
       if(importYaml.includes(key)){
@@ -141,8 +144,59 @@ export function loadConfigYaml(importYaml: string): any{
       }
 
     });
-    console.log(importYaml);
+    //console.log(importYaml);
     const config = YAML.parse(importYaml)
     return config
+
+}
+
+
+export function cookieEnrichPolicy(cookies: string[]): RequestPolicyFactory {
+    return {
+        create: (nextPolicy: RequestPolicy, options: RequestPolicyOptions) => {
+            return new CookieEnrichPolicy(nextPolicy, options, cookies)
+        }
+    }
+}
+
+/** Enriches each request with a set of cookies */
+export class CookieEnrichPolicy extends BaseRequestPolicy {
+    constructor(nextPolicy: RequestPolicy, options: RequestPolicyOptions, readonly cookies: string[]) {
+        super(nextPolicy, options)
+    }
+
+    async sendRequest(webResource: WebResource): Promise<HttpOperationResponse> {
+        const reqCookies = webResource.headers.get('cookie')
+        const combinedCookies = combineCookies(reqCookies, this.cookies)
+
+        webResource.headers.set('cookie', combinedCookies.join(';'))
+
+        return await this._nextPolicy.sendRequest(webResource)
+    }
+}
+
+
+export async function runeckLoginToken(rundeckUrl: string, username: string, password: string ){
+    const clientPasswordAuth = new Rundeck(new PasswordCredentialProvider(rundeckUrl, username, password), {noRetryPolicy: true, baseUri: rundeckUrl})
+
+    const tokenResponse = await clientPasswordAuth.sendRequest({
+        headers: {'Content-Type': 'application/json'},
+        pathTemplate: `/api/36/tokens/{username}`,
+        pathParameters: {username: username},
+        baseUrl: rundeckUrl,
+        method: 'POST',
+        body: {
+            "user": username,
+            "roles": [
+              "admin",
+            ],
+            "duration": "30d"
+          }
+      });
+
+    let token = tokenResponse.parsedBody.token
+
+    const client = new Rundeck(new TokenCredentialProvider(token),{baseUri: rundeckUrl})
+    return {token: token, client: client}
 
 }

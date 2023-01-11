@@ -1,7 +1,7 @@
 import {Argv} from'yargs'
-import {waitForRundeckReady, createStoragePassword, createProject, asyncForEach, createStoragePrivateKey, createAcl} from '../lib/util'
+import {createWaitForRundeckReady, runeckLoginToken, asyncForEach, loadConfigYaml} from '../lib/util'
 
-import { Rundeck, PasswordCredentialProvider}from 'ts-rundeck'
+import { Rundeck, PasswordCredentialProvider} from 'ts-rundeck'
 import Path from 'path'
 import * as FS from '../async/fs'
 import { JobUuidOption } from 'ts-rundeck/dist/lib/models'
@@ -12,6 +12,8 @@ import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript'
 
 interface Opts {
     rundeck_url: string,
+    username: string,
+    password: string,
     config_file: string,
     path: string,
     debug: boolean
@@ -32,6 +34,20 @@ builder(yargs: Argv) {
             .option("r", {
                 alias: "rundeck_url",
                 describe: "Rundeck URL",
+                type: 'string',
+                default: false,
+                require: true
+            })
+            .option("ru", {
+                alias: "username",
+                describe: "Rundeck Username",
+                type: 'string',
+                default: false,
+                require: true
+            })
+            .option("rp", {
+                alias: "password",
+                describe: "Rundeck password",
                 type: 'string',
                 default: false,
                 require: true
@@ -69,12 +85,14 @@ builder(yargs: Argv) {
 
         const users: User[]  = config.users;
 
-        const username = 'admin'
-        const password = 'admin'
-        const client = new Rundeck(new PasswordCredentialProvider(rundeckUrl, username, password), {baseUri: rundeckUrl})
+        const username = opts.username
+        const password = opts.password
+        const client = new Rundeck(new PasswordCredentialProvider(rundeckUrl, username, password), {noRetryPolicy: true, baseUri: rundeckUrl})
 
-        console.log("Waiting for Rundeck");
-        await waitForRundeckReady(client);
+        console.log("Waiting for Rundeck"); 
+        await createWaitForRundeckReady(
+            () => client,5 * 60 * 1000)
+        
         console.log("Rundeck started!!!");
 
         console.log("----------------------------------");
