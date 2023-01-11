@@ -216,7 +216,7 @@ builder(yargs: Argv) {
                       'Content-Type': 'application/zip',
                   }
 
-                  fetch(`${rundeckUrl}/api/38/project/${project_name}/import?importConfig=true&importACL=true&jobUuidOption=remove&importWebhooks=true`,
+                  fetch(`${rundeckUrl}/api/38/project/${project_name}/import?importConfig=true&importACL=true&jobUuidOption=preserve&importWebhooks=true`,
                       { method: 'PUT', body: file, headers:headers, })
                       //.then(res => console.log(res));
 
