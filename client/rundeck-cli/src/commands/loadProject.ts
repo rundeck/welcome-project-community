@@ -103,17 +103,16 @@ builder(yargs: Argv) {
         const username = opts.username
         const password = opts.password
 
-        const rundeckAuth = await runeckLoginToken(rundeckUrl, username, password)
-        const token = rundeckAuth["token"]
-        const client = rundeckAuth["client"]
-
         console.log("Waiting for Rundeck");
         await createWaitForRundeckReady(
             () => new Rundeck(new PasswordCredentialProvider(rundeckUrl, username, password), {noRetryPolicy: true, baseUri: rundeckUrl}),
             5 * 60 * 1000
-            );
+        );
+        console.info(`Client connected.`)
 
-        console.log("Rundeck started!!!");
+        const rundeckAuth = await runeckLoginToken(rundeckUrl, username, password)
+        const token = rundeckAuth["token"]
+        const client = rundeckAuth["client"]
 
         console.log("----------------------------------");
         console.log("Importing keys");
@@ -192,7 +191,7 @@ builder(yargs: Argv) {
             var projectImport = false;
             try{
                 const resp =  await createProject(client, project_name);
-
+                console.log(resp)
                 if(resp.error){
                     console.error("Error creating project");
                     console.error(resp.message);
