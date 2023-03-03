@@ -8,6 +8,7 @@ INTERVAL=5
 MAXTRY=10
 attempts=0
 
+KEY_FILE="$KEY_PATH/id_rsa"
 while (( attempts <= MAXTRY ))
 do
     if ! test -f "$KEY_FILE"
@@ -23,3 +24,7 @@ do
 done
 
 echo "OK: file exists: $(ls -l "$KEY_FILE")"
+
+mkdir /configuration
+cp $KEY_PATH/id_rsa /configuration/
+cp $KEY_PATH/id_rsa.pub /configuration/
