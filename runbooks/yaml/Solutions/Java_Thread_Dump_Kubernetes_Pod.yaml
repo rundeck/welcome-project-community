@@ -1,0 +1,96 @@
+- defaultTab: nodes
+  description: |-
+    Retrieve a Java Thread Dump and Send to a Persistant Location
+
+    This job retrieves a Java thread dump from a Kubernetes Pod and send the output to a persistant-storage location.
+
+    By default, the job simply sends the file to itself. But the job can be reconfigured to an SFTP server, S3, Blob Storage or other external locations or services.
+
+    For a walkthrough on how to setup and use this job, see the documentation [here](https://docs.rundeck.com/docs/learning/solutions/automated-diagnostics/examples/k8s-app-debug-capture.html).
+
+    **Note**: By default, the Java thread dump is not printed in the logs but are instead only saved to a file that can then be sent elsewhere. This behavior can be changed in the log filter of Step 2.
+  executionEnabled: true
+  id: 2484f1c3-2ef6-4848-9990-416de23aff78
+  loglevel: INFO
+  name: Java Thread Dump from Kubernetes Pod
+  nodeFilterEditable: true
+  notification:
+    onsuccess:
+      plugin:
+        configuration:
+          incident_id: ${option.pd-incident-id}
+          note: Debug Data Now Available
+        type: pd-note-incident-notification
+  notifyAvgDurationThreshold: null
+  options:
+  - description: The Kubernetes namespace of the pod to diagnose.
+    label: Namespace
+    name: namespace
+    required: true
+    value: default
+  - description: The name of the pod that is running the JVM to diagnose.
+    label: Pod Name
+    name: PodName
+    required: true
+  - description: 'The name of the container within the pod that is running the JVM
+      to diagnose. If there is only one container in the pod, this field is optional.'
+    label: Container Name
+    name: ContainerName
+  plugins:
+    ExecutionLifecycle: {}
+  scheduleEnabled: true
+  schedules: []
+  sequence:
+    commands:
+    - configuration:
+        command: pgrep java
+        container: ${option.ContainerName}
+        name: ${option.PodName}
+        namespace: ${option.namespace}
+        shell: /bin/sh
+        verify_ssl: 'false'
+      description: Retrieve Java Process ID
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            invalidKeyPattern: \s|\$|\{|\}|\\
+            logData: 'true'
+            name: process-id
+            regex: (.*)
+            replaceFilteredResult: 'false'
+          type: key-value-data
+      type: Kubernetes-Execute-Step
+    - configuration:
+        command: jstack ${data.process-id*}
+        container: ${option.ContainerName}
+        name: ${option.PodName}
+        namespace: ${option.namespace}
+        shell: /bin/sh
+        verify_ssl: 'false'
+      description: Conduct Java Thread Dump
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            captureMultipleKeysValues: 'false'
+            hideOutput: 'true'
+            logData: 'false'
+            name: threadDump
+            regex: (.*)
+          type: key-value-data-multilines
+      type: Kubernetes-Execute-Step
+    - description: Save Thread Dump to Temp File
+      exec: echo ${data.threadDump*} > /tmp/threadDump-${job.id}-${job.execid}.log
+    - configuration:
+        backupDestinationFile: 'false'
+        backupSourceFile: 'false'
+        deleteFile: 'false'
+        destURLString: file:///tmp/transfered-file.log
+        sourceURLString: file:///tmp/threadDump-${job.id}-${job.execid}.log
+      description: Transfer File to Retrievable Location
+      nodeStep: true
+      type: filetransfer
+    keepgoing: false
+    strategy: node-first
+  uuid: 2484f1c3-2ef6-4848-9990-416de23aff78
