@@ -1,6 +1,6 @@
 echo "Init Script Starting"
 ## Place Init Script Code here as needed.  This is run as part of DockerFile steps for Client node.
-ssh-keygen -q -t rsa -N '' -f /rundeck-cli/data/keys/id_rsa
+ssh-keygen -m PEM -N '' -f /rundeck-cli/data/keys/id_rsa
 
 #cat $CONFIG_FILE
 
