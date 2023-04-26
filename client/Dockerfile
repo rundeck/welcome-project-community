@@ -1,4 +1,4 @@
-FROM node:12.20.1
+FROM node:bullseye
 
 RUN  apt-get update && apt-get upgrade -y -qq && \
      apt-get install -y -qq --no-install-recommends wget git curl jq
