@@ -4,6 +4,8 @@ FROM ${RUNDECK_IMAGE}
 RUN  sudo apt-get update && \
      sudo apt-get install -y -qq --no-install-recommends wget git curl jq iputils-ping sysstat
 
+RUN sudo apt-get install libc6
+
 RUN ssh-keygen -q -t rsa -N '' -f ~/.ssh/id_rsa <<< y
 
 COPY --chown=rundeck:root data/resources.yml /home/rundeck
